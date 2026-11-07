@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Access Granted – Our Nikah Memories</title>
+  <meta name="description" content="Your guest verification is complete. Welcome to our private wedding memories." />
+  
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+  <div class="bg-islamic-pattern" aria-hidden="true"></div>
+  <canvas id="goldParticlesCanvas" class="particles-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></canvas>
+
+  <!-- Main Container -->
+  <main style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem;">
+    <div class="container" style="max-width: 580px;">
+      <div class="glass-card reveal-fade-up" style="text-align: center; position: relative; overflow: hidden; padding: 3rem 2rem;">
+        
+        <!-- Animated Golden Seal of Approval -->
+        <div style="position: relative; width: 110px; height: 110px; margin: 0 auto 2rem auto;">
+          <div class="success-badge-pulse" style="position: absolute; inset: 0; border-radius: 50%; background: var(--gradient-gold); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-gold-glow);">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#022C22" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+        </div>
+
+        <span class="section-kicker" style="color: var(--color-gold); font-size: 0.9rem; letter-spacing: 0.15em;">
+          SECURITY VERIFICATION COMPLETE
+        </span>
+
+        <h1 style="font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--color-ivory); margin: 0.5rem 0 1rem 0;">
+          Welcome to Our <span class="shimmer-gold-text">Wedding Memories!</span>
+        </h1>
+
+        <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.5; margin-bottom: 2rem;">
+          Your identity and selfie have been securely validated and recorded in our private guestbook.
+        </p>
+
+        <!-- Verified Guest Card Summary -->
+        <div style="background: rgba(1, 26, 20, 0.75); border: 1px solid var(--color-border-gold); border-radius: var(--radius-md); padding: 1.25rem; display: flex; align-items: center; gap: 1.25rem; text-align: left; margin-bottom: 2rem;">
+          <img 
+            id="successSelfiePreview" 
+            src="/src/assets/images/hero_nikah_couple_1794069445348.jpg" 
+            alt="Verified Selfie" 
+            style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-gold); flex-shrink: 0;"
+          />
+          <div style="flex-grow: 1; overflow: hidden;">
+            <div id="successGuestName" style="font-weight: 700; font-size: 1.15rem; color: var(--color-ivory);">
+              Guest Name
+            </div>
+            <div id="successFolderTitle" style="color: var(--color-gold); font-size: 0.85rem; margin-top: 2px;">
+              Shaadi – Nikah Ceremony
+            </div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">
+              Status: <span style="color: #6EE7B7;">Instant Access Granted</span> · Private Session Active
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <a id="enterGalleryBtn" href="/pages/gallery.html" class="btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1.05rem; justify-content: center;">
+            <span>Enter Wedding Gallery</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+
+          <a id="successDriveBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="width: 100%; padding: 0.85rem; font-size: 0.95rem; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+            </svg>
+            <span>Open in Google Drive</span>
+          </a>
+        </div>
+
+        <div style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--color-text-muted);">
+          Redirecting automatically to gallery in <span id="countdownTimer" style="color: var(--color-gold); font-weight: 700;">4</span> seconds...
+        </div>
+      </div>
+
+      <!-- Small Footer Link to Admin Panel -->
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <a href="/pages/admin-login.html" style="font-size: 0.72rem; color: rgba(212, 175, 55, 0.4); text-decoration: none;">
+          🔒 Admin Panel
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module">
+    import { getGuestAccessData } from '/js/auth.js';
+    import { soundFX } from '/js/app.js';
+
+    const DRIVE_MAP = {
+      ghar: 'https://drive.google.com/drive/folders/1USSkmlp613tl2o5L-j7ueDnEe5Ak3Q3T',
+      shaadi: 'https://drive.google.com/drive/folders/1Bqv-OgFD2C95ta6dIZQ1bezzojP05f_c',
+      vlog: 'https://drive.google.com/drive/folders/1Sgs9rd39gio0DJsgLYhHbgdN-PgvelLE',
+      walima: 'https://drive.google.com/drive/folders/1EWuMrnv-yChWEqjnYRvqGMkODioYXoNq'
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      soundFX.playChime();
+
+      const guestData = getGuestAccessData();
+      const selfieUrl = sessionStorage.getItem('onm_temp_selfie_preview');
+
+      const nameEl = document.getElementById('successGuestName');
+      const folderEl = document.getElementById('successFolderTitle');
+      const selfieEl = document.getElementById('successSelfiePreview');
+      const enterBtn = document.getElementById('enterGalleryBtn');
+      const driveBtn = document.getElementById('successDriveBtn');
+      const countdownEl = document.getElementById('countdownTimer');
+
+      const folderId = guestData?.folderId || sessionStorage.getItem('selectedFolderId') || 'shaadi';
+
+      if (nameEl && guestData) nameEl.textContent = guestData.name;
+      if (folderEl && guestData) folderEl.textContent = guestData.folderTitle || folderId;
+      if (selfieEl && selfieUrl) selfieEl.src = selfieUrl;
+      if (enterBtn) enterBtn.href = `/pages/gallery.html?folder=${folderId}`;
+      if (driveBtn) driveBtn.href = DRIVE_MAP[folderId] || DRIVE_MAP.shaadi;
+
+      // Auto redirect countdown
+      let count = 4;
+      const interval = setInterval(() => {
+        count--;
+        if (countdownEl) countdownEl.textContent = count.toString();
+        if (count <= 0) {
+          clearInterval(interval);
+          window.location.href = `/pages/gallery.html?folder=${folderId}`;
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

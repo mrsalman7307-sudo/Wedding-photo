@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Gallery – Our Nikah Memories</title>
+  <meta name="description" content="Private collection of photos and videos for authorized wedding guests." />
+  
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+
+  <style>
+    /* Gallery-specific layout */
+    .gallery-masonry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.75rem;
+      margin-top: 2rem;
+    }
+
+    .gallery-item-card {
+      background: var(--color-surface-glass);
+      border: 1px solid var(--color-border-gold);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+    }
+
+    .gallery-item-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--color-gold);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), var(--shadow-gold-glow);
+    }
+
+    .gallery-media-thumb-wrapper {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      background: #011812;
+    }
+
+    .gallery-media-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-item-card:hover .gallery-media-thumb {
+      transform: scale(1.06);
+    }
+
+    .gallery-media-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(1, 26, 20, 0.95) 100%);
+    }
+
+    .video-play-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--gradient-gold);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--transition-fast);
+      z-index: 5;
+    }
+
+    .gallery-item-card:hover .video-play-indicator {
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    .media-badge-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(2, 44, 34, 0.85);
+      border: 1px solid var(--color-border-gold);
+      color: var(--color-gold-bright);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      z-index: 4;
+    }
+
+    .media-duration-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--color-gold);
+      color: var(--color-gold-light);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-sm);
+      z-index: 4;
+      font-family: monospace;
+    }
+
+    .gallery-card-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem;
+      z-index: 5;
+    }
+
+    .gallery-item-title {
+      font-size: 1.15rem;
+      color: var(--color-ivory);
+      margin-bottom: 0.25rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+
+    .gallery-item-caption {
+      font-size: 0.825rem;
+      color: var(--color-text-secondary);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .gallery-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--color-gold);
+      font-family: monospace;
+    }
+
+    /* Lightbox Styles */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(1, 15, 11, 0.95);
+      backdrop-filter: blur(16px);
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+    }
+
+    .lightbox-modal.active {
+      display: flex;
+    }
+
+    .lightbox-header {
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      background: rgba(2, 38, 29, 0.7);
+    }
+
+    .lightbox-stage {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lightbox-image {
+      max-width: 90vw;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      border: 1px solid var(--color-border-gold);
+    }
+
+    .lightbox-video {
+      max-width: 90vw;
+      max-height: 75vh;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      border: 1px solid var(--color-gold);
+      outline: none;
+    }
+
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(2, 44, 34, 0.85);
+      border: 1px solid var(--color-gold);
+      color: var(--color-gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      z-index: 10;
+    }
+
+    .lightbox-nav-btn:hover {
+      background: var(--gradient-gold);
+      color: #022C22;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .lightbox-nav-prev { left: 1.5rem; }
+    .lightbox-nav-next { right: 1.5rem; }
+
+    .lightbox-footer {
+      padding: 1rem 2rem;
+      background: rgba(2, 38, 29, 0.7);
+      border-top: 1px solid rgba(212, 175, 55, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-islamic-pattern" aria-hidden="true"></div>
+  <canvas id="goldParticlesCanvas" class="particles-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></canvas>
+
+  <!-- Top Bar -->
+  <header class="top-header">
+    <div class="top-header-inner">
+      <a href="/" class="brand-wordmark">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.79c-.44-.07-.9-.11-1.36-.11z"/>
+            <polygon points="18.5,4 19.5,6.5 22,7 20,9 20.5,11.5 18.5,10 16.5,11.5 17,9 15,7 17.5,6.5" />
+          </svg>
+        </div>
+        <div class="brand-text">Our Nikah <span>Memories</span></div>
+      </a>
+
+      <!-- Guest Welcome Notice (Hidden on small mobile if needed or compact) -->
+      <div class="hide-on-mobile" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
+        <span style="color: var(--color-text-muted);">Guest:</span>
+        <span id="galleryGuestGreeting" style="font-weight: 600; color: var(--color-gold-bright);">
+          Honored Guest
+        </span>
+      </div>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <a href="/#galleries" class="btn-outline-gold">
+          <span>&larr; Folders</span>
+        </a>
+        <button id="exitGalleryBtn" class="btn-outline-gold" style="border-color: rgba(239,68,68,0.5); color: #FCA5A5;">
+          <span>Exit</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Gallery Header & Controls -->
+  <main style="padding: 2.5rem 0 5rem 0;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; border-bottom: 1px solid var(--color-border-gold); padding-bottom: 2rem; margin-bottom: 2rem;">
+        <div>
+          <span id="galleryFolderSubtitle" class="section-kicker" style="margin-bottom: 0.25rem;">
+            Ceremony & Blessings
+          </span>
+          <h1 id="galleryFolderTitle" style="font-size: clamp(1.8rem, 4vw, 2.75rem); color: var(--color-ivory); margin-bottom: 0.5rem;">
+            Shaadi – Nikah Ceremony
+          </h1>
+          <p id="galleryFolderDesc" style="color: var(--color-text-secondary); max-width: 650px; font-size: 0.95rem;">
+            The auspicious Nikah solemnization, legal signature, Quranic recitation, and exchange of rings.
+          </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <a id="galleryDriveFolderBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="padding: 0.65rem 1.15rem; font-size: 0.85rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+            </svg>
+            <span>Open in Google Drive</span>
+          </a>
+          <button id="downloadAllZipBtn" class="btn-gold" style="padding: 0.65rem 1.15rem; font-size: 0.85rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>Download All as ZIP</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Tabs & Search Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <!-- Filters -->
+        <div style="display: flex; gap: 0.5rem; background: rgba(2, 44, 34, 0.6); padding: 0.4rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border-gold);">
+          <button class="gallery-filter-btn btn-outline-gold active" data-filter="all" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
+            All Media
+          </button>
+          <button class="gallery-filter-btn btn-outline-gold" data-filter="photo" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
+            Photos Only
+          </button>
+          <button class="gallery-filter-btn btn-outline-gold" data-filter="video" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
+            Videos Only
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div style="position: relative; min-width: 280px; flex-grow: 1; max-width: 400px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input 
+            type="text" 
+            id="gallerySearchInput" 
+            class="form-input" 
+            placeholder="Search by caption, moment or tag..." 
+            style="padding-left: 2.75rem; padding-top: 0.6rem; padding-bottom: 0.6rem;"
+          />
+        </div>
+      </div>
+
+      <!-- Masonry Grid -->
+      <div id="galleryGrid" class="gallery-masonry-grid">
+        <!-- Rendered by /js/gallery.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="lightboxModal" class="lightbox-modal">
+    <div class="lightbox-header">
+      <div>
+        <h3 id="lightboxTitle" style="font-size: 1.15rem; color: var(--color-ivory);">
+          Memory Title
+        </h3>
+        <div id="lightboxMeta" class="gallery-item-meta" style="margin-top: 2px;">
+          <!-- Date and size -->
+        </div>
+      </div>
+      <button id="lightboxCloseBtn" class="btn-outline-gold" style="padding: 0.4rem 0.8rem; font-size: 1rem;">
+        &times; Close
+      </button>
+    </div>
+
+    <div class="lightbox-stage">
+      <button id="lightboxPrevBtn" class="lightbox-nav-btn lightbox-nav-prev" aria-label="Previous memory">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+
+      <div id="lightboxMediaContainer">
+        <!-- Image or Video dynamically mounted -->
+      </div>
+
+      <button id="lightboxNextBtn" class="lightbox-nav-btn lightbox-nav-next" aria-label="Next memory">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="lightbox-footer">
+      <p id="lightboxCaption" style="font-size: 0.9rem; color: var(--color-text-secondary); max-width: 800px;">
+        Detailed caption.
+      </p>
+      <button id="lightboxDownloadBtn" class="btn-gold" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Download File</span>
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/gallery.js"></script>
+</body>
+</html>

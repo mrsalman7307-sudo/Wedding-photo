@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Our Nikah Memories</title>
+  <meta name="description" content="Host overview of approved members, security access records, and media statistics." />
+  
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <div class="brand-icon" style="width: 32px; height: 32px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.79c-.44-.07-.9-.11-1.36-.11z"/>
+            <polygon points="18.5,4 19.5,6.5 22,7 20,9 20.5,11.5 18.5,10 16.5,11.5 17,9 15,7 17.5,6.5" />
+          </svg>
+        </div>
+        <div class="brand-text" style="font-size: 1.15rem;">Nikah <span>Admin</span></div>
+      </div>
+
+      <nav class="admin-sidebar-nav">
+        <a href="/pages/admin-dashboard.html" class="admin-nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="/pages/members.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Approved Members</span>
+        </a>
+
+        <a href="/pages/access-logs.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <span>Selfie Audit Logs</span>
+        </a>
+
+        <a href="/pages/media-manager.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2"/>
+          </svg>
+          <span>Media Manager</span>
+        </a>
+
+        <a href="/pages/settings.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <a href="/" target="_blank" style="font-size: 0.8rem; color: var(--color-gold); text-decoration: none; display: flex; align-items: center; gap: 0.4rem;">
+          <span>View Live Site</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+        <button onclick="window.logoutAdmin()" style="background: none; border: none; font-size: 0.8rem; color: #FCA5A5; cursor: pointer;">
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main-content">
+      <header class="admin-topbar">
+        <div>
+          <h2 style="font-size: 1.35rem; color: var(--color-ivory);">Wedding Management Dashboard</h2>
+          <p style="font-size: 0.825rem; color: var(--color-text-muted);">Real-time guest authentication & vault metrics</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <a href="/pages/members.html" class="btn-gold" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+            <span>+ Add Approved Member</span>
+          </a>
+        </div>
+      </header>
+
+      <main class="admin-body">
+        <!-- 5 Key Animated Statistic Cards -->
+        <div class="stats-grid">
+          <!-- Stat 1 -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Approved Members</span>
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+            </div>
+            <div id="statTotalMembers" class="stat-value">5</div>
+            <div class="stat-subtext">Pre-approved guest database</div>
+          </div>
+
+          <!-- Stat 2 -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Selfie Access Records</span>
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+            </div>
+            <div id="statTotalRecords" class="stat-value">2</div>
+            <div class="stat-subtext">Verified guest sessions</div>
+          </div>
+
+          <!-- Stat 3 -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Total Photos</span>
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div id="statTotalPhotos" class="stat-value">8</div>
+            <div class="stat-subtext">High-res wedding photography</div>
+          </div>
+
+          <!-- Stat 4 -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Total Videos</span>
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+              </div>
+            </div>
+            <div id="statTotalVideos" class="stat-value">4</div>
+            <div class="stat-subtext">4K wedding cinematography</div>
+          </div>
+
+          <!-- Stat 5 -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Storage Used</span>
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              </div>
+            </div>
+            <div id="statTotalStorage" class="stat-value">1.4 GB</div>
+            <div class="stat-subtext">50 GB Private Bucket Cap</div>
+          </div>
+        </div>
+
+        <!-- Folder Breakdown Grid -->
+        <div style="margin-bottom: 2.5rem;">
+          <h3 style="font-size: 1.25rem; color: var(--color-ivory); margin-bottom: 1rem;">
+            Wedding Gallery Albums & Access Grants
+          </h3>
+          <div id="adminFolderStats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Recent Selfie Access Table -->
+        <div class="data-table-container">
+          <div class="table-toolbar">
+            <div>
+              <h3 style="font-size: 1.15rem; color: var(--color-ivory);">Recent Verified Guest Access</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted);">Audited front-camera selfies and timestamps</p>
+            </div>
+            <a href="/pages/access-logs.html" class="btn-outline-gold" style="font-size: 0.825rem; padding: 0.45rem 0.9rem;">
+              View Full Audit Log &rarr;
+            </a>
+          </div>
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Selfie</th>
+                <th>Guest</th>
+                <th>Folder</th>
+                <th>Access Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="adminRecentLogsBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Fullscreen Selfie Modal -->
+  <div id="selfiePreviewModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h4 id="selfieModalName" style="font-size: 1.1rem; color: var(--color-ivory);">Guest Selfie</h4>
+          <span id="selfieModalMeta" style="font-size: 0.75rem; color: var(--color-gold);"></span>
+        </div>
+        <button class="close-modal-btn" onclick="window.closeModal('selfiePreviewModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img 
+          id="selfieModalImage" 
+          src="" 
+          alt="Selfie" 
+          style="width: 100%; max-height: 380px; object-fit: contain; border-radius: var(--radius-sm); border: 2px solid var(--color-gold);" 
+        />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline-gold" onclick="window.closeModal('selfiePreviewModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module">
+    import { initAdminDashboard } from '/js/admin.js';
+    initAdminDashboard();
+  </script>
+</body>
+</html>

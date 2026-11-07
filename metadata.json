@@ -1,0 +1,6 @@
+{
+  "name": "Our Nikah Memories",
+  "description": "A luxury private Muslim wedding photo & video sharing platform with pre-approved guest verification, selfie authentication, and full admin management.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
