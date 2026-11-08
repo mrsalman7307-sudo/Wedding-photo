@@ -12,7 +12,6 @@
 </head>
 <body>
   <div class="bg-islamic-pattern" aria-hidden="true"></div>
-  <canvas id="goldParticlesCanvas" class="particles-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;"></canvas>
 
   <!-- Main Container -->
   <main style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem;">
@@ -20,43 +19,43 @@
       <div class="glass-card reveal-fade-up" style="text-align: center; position: relative; overflow: hidden; padding: 3rem 2rem;">
         
         <!-- Animated Golden Seal of Approval -->
-        <div style="position: relative; width: 110px; height: 110px; margin: 0 auto 2rem auto;">
-          <div class="success-badge-pulse" style="position: absolute; inset: 0; border-radius: 50%; background: var(--gradient-gold); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-gold-glow);">
-            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#022C22" stroke-width="2.5">
+        <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 1.75rem auto;">
+          <div class="success-badge-pulse" style="position: absolute; inset: 0; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(12, 56, 41, 0.25);">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
           </div>
         </div>
 
-        <span class="section-kicker" style="color: var(--color-gold); font-size: 0.9rem; letter-spacing: 0.15em;">
+        <span class="section-kicker" style="color: var(--color-gold); font-size: 0.85rem; letter-spacing: 0.15em; font-weight:700;">
           SECURITY VERIFICATION COMPLETE
         </span>
 
-        <h1 style="font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--color-ivory); margin: 0.5rem 0 1rem 0;">
-          Welcome to Our <span class="shimmer-gold-text">Wedding Memories!</span>
+        <h1 style="font-size: clamp(1.8rem, 4vw, 2.3rem); color: var(--color-primary); margin: 0.5rem 0 0.75rem 0;">
+          Welcome to Our <span style="color:var(--color-gold-script); font-style:italic;">Wedding Memories!</span>
         </h1>
 
-        <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.5; margin-bottom: 2rem;">
+        <p style="color: var(--color-text-body); font-size: 0.95rem; line-height: 1.55; margin-bottom: 2rem;">
           Your identity and selfie have been securely validated and recorded in our private guestbook.
         </p>
 
         <!-- Verified Guest Card Summary -->
-        <div style="background: rgba(1, 26, 20, 0.75); border: 1px solid var(--color-border-gold); border-radius: var(--radius-md); padding: 1.25rem; display: flex; align-items: center; gap: 1.25rem; text-align: left; margin-bottom: 2rem;">
+        <div style="background: #FAF7F2; border: 1.5px solid var(--color-border-gold); border-radius: var(--radius-md); padding: 1.25rem; display: flex; align-items: center; gap: 1.25rem; text-align: left; margin-bottom: 2rem;">
           <img 
             id="successSelfiePreview" 
             src="/src/assets/images/hero_nikah_couple_1794069445348.jpg" 
             alt="Verified Selfie" 
-            style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-gold); flex-shrink: 0;"
+            style="width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--color-gold); flex-shrink: 0;"
           />
           <div style="flex-grow: 1; overflow: hidden;">
-            <div id="successGuestName" style="font-weight: 700; font-size: 1.15rem; color: var(--color-ivory);">
+            <div id="successGuestName" style="font-weight: 700; font-size: 1.15rem; color: var(--color-primary);">
               Guest Name
             </div>
-            <div id="successFolderTitle" style="color: var(--color-gold); font-size: 0.85rem; margin-top: 2px;">
+            <div id="successFolderTitle" style="color: var(--color-gold-script); font-size: 0.9rem; font-weight: 600; margin-top: 2px;">
               Shaadi – Nikah Ceremony
             </div>
-            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">
-              Status: <span style="color: #6EE7B7;">Instant Access Granted</span> · Private Session Active
+            <div style="font-size: 0.78rem; color: var(--color-text-muted); margin-top: 4px;">
+              Status: <span style="color: var(--color-primary); font-weight:600;">Instant Access Granted</span> · Private Session Active
             </div>
           </div>
         </div>
@@ -79,13 +78,13 @@
         </div>
 
         <div style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--color-text-muted);">
-          Redirecting automatically to gallery in <span id="countdownTimer" style="color: var(--color-gold); font-weight: 700;">4</span> seconds...
+          Redirecting automatically to gallery in <span id="countdownTimer" style="color: var(--color-primary); font-weight: 700;">4</span> seconds...
         </div>
       </div>
 
       <!-- Small Footer Link to Admin Panel -->
       <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="/pages/admin-login.html" style="font-size: 0.72rem; color: rgba(212, 175, 55, 0.4); text-decoration: none;">
+        <a href="/pages/admin-login.html" class="footer-admin-link">
           🔒 Admin Panel
         </a>
       </div>

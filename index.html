@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Our Nikah Memories – Private Wedding Photo & Video Sharing</title>
-  <meta name="description" content="A luxury private Muslim wedding photo & video sharing platform with pre-approved guest verification, selfie authentication, and full admin management." />
+  <meta name="description" content="A private collection of our Nikah, Walima and family moments. Protected Muslim wedding memories sharing platform." />
   <meta property="og:title" content="Our Nikah Memories – Private Wedding Photo & Video Sharing" />
-  <meta property="og:description" content="A luxury private Muslim wedding photo & video sharing platform with pre-approved guest verification, selfie authentication, and full admin management." />
+  <meta property="og:description" content="A private collection of our Nikah, Walima and family moments." />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   
@@ -16,43 +16,50 @@
   <link rel="stylesheet" href="/css/responsive.css" />
 </head>
 <body>
-  <!-- Background Geometric Lattice -->
+  <!-- Background Islamic Pattern -->
   <div class="bg-islamic-pattern" aria-hidden="true"></div>
 
-  <!-- Top Navigation Bar (Clean 3-Zone Contract) -->
+  <!-- Top Navigation Bar (Matching Reference Image) -->
   <header class="top-header">
     <div class="top-header-inner">
-      <!-- Zone 1: Single Wordmark Brand Element -->
-      <a href="/" class="brand-wordmark">
-        <div class="brand-icon">
-          <!-- Crescent Moon & Islamic Star SVG -->
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.79c-.44-.07-.9-.11-1.36-.11z"/>
-            <polygon points="18.5,4 19.5,6.5 22,7 20,9 20.5,11.5 18.5,10 16.5,11.5 17,9 15,7 17.5,6.5" />
+      <!-- Zone 1: Logo & Brand Wordmark -->
+      <a href="/" class="brand-wordmark" aria-label="Our Nikah Memories Home">
+        <div class="brand-icon-mosque">
+          <!-- Pointed Mosque Arch Outline SVG -->
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 3 C16 3 9 9 9 17 L9 29 L23 29 L23 17 C23 9 16 3 16 3 Z" />
+            <path d="M16 14 C16 14 12 18 12 23 L12 29 L20 29 L20 23 C20 18 16 14 16 14 Z" />
+            <path d="M16 3 L16 1.5" />
+            <circle cx="16" cy="1.2" r="0.8" fill="currentColor" />
           </svg>
         </div>
-        <div class="brand-text">Our Nikah <span>Memories</span></div>
+        <div class="brand-title-wrap">
+          <span class="brand-line-1">Our Nikah</span>
+          <span class="brand-line-2">Memories</span>
+        </div>
       </a>
 
       <!-- Zone 2: Navigation Links -->
       <nav class="nav-links">
         <a href="/" class="nav-link active">Home</a>
-        <a href="#galleries" class="nav-link">Galleries</a>
-        <a href="#security" class="nav-link">Privacy & Security</a>
+        <a href="#galleries" class="nav-link">Gallery</a>
+        <a href="#about" class="nav-link">About</a>
       </nav>
 
-      <!-- Zone 3: Primary Action -->
+      <!-- Zone 3: Admin Capsule Button -->
       <div class="header-actions">
-        <a href="#galleries" class="btn-gold">
-          <span>Explore <span class="hide-on-mobile">Galleries</span></span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+        <a href="/pages/admin-login.html" class="btn-admin-pill" title="Host Administrator Portal">
+          <!-- User Silhouette Icon -->
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
           </svg>
+          <span>Admin</span>
         </a>
 
-        <!-- Mobile Nav Hamburger -->
-        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Open navigation menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Navigation">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -66,362 +73,389 @@
   <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop"></div>
   <aside class="mobile-drawer" id="mobileDrawer">
     <div class="mobile-drawer-header">
-      <div class="brand-text">Our Nikah <span>Memories</span></div>
-      <button id="closeMobileDrawer" style="background:none; border:none; color:var(--color-gold); font-size:1.5rem; cursor:pointer;">&times;</button>
+      <div class="brand-title-wrap">
+        <span class="brand-line-1" style="color:var(--color-primary); font-family:var(--font-display); font-weight:700;">Our Nikah</span>
+        <span class="brand-line-2" style="color:var(--color-primary); font-family:var(--font-display); font-weight:700;">Memories</span>
+      </div>
+      <button id="closeMobileDrawer" style="background:none; border:none; color:var(--color-primary); font-size:1.6rem; cursor:pointer;">&times;</button>
     </div>
     <div class="mobile-drawer-nav">
       <a href="/" class="mobile-nav-link active">Home</a>
-      <a href="#galleries" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open'); document.getElementById('mobileDrawerBackdrop').classList.remove('active');">Wedding Galleries</a>
-      <a href="#security" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open'); document.getElementById('mobileDrawerBackdrop').classList.remove('active');">Security Verification</a>
+      <a href="#galleries" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open'); document.getElementById('mobileDrawerBackdrop').classList.remove('active');">Gallery</a>
+      <a href="#about" class="mobile-nav-link" onclick="document.getElementById('mobileDrawer').classList.remove('open'); document.getElementById('mobileDrawerBackdrop').classList.remove('active');">About</a>
+      <a href="/pages/admin-login.html" class="mobile-nav-link">Admin Panel</a>
     </div>
-    <div style="margin-top:auto; padding-top:1.5rem; border-top:1px solid rgba(212,175,55,0.2);">
-      <a href="#galleries" class="btn-gold" style="width:100%; text-align:center;">Unlock Memories</a>
+    <div style="margin-top:auto; padding-top:1.5rem; border-top:1px solid rgba(197,160,89,0.2);">
+      <a href="#galleries" class="btn-admin-pill" style="width:100%; justify-content:center;">Explore Galleries</a>
     </div>
   </aside>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (Matching Reference Image) -->
   <section class="hero-section">
-    <!-- Background Wedding Photo -->
-    <img 
-      src="/src/assets/images/hero_nikah_couple_1794069445348.jpg" 
-      alt="Nikah Wedding Couple" 
-      class="hero-backdrop-image"
-      referrerpolicy="no-referrer"
-    />
-    <div class="hero-overlay-gradient"></div>
+    <!-- Top-Left Botanical Olive / Eucalyptus Branch SVG -->
+    <svg class="botanical-branch-left" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M-10 -10 C30 20 60 70 85 130" stroke="#4A634E" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M15 12 C10 2 30 -5 38 8 C42 18 20 22 15 12 Z" fill="#6A8A6E" opacity="0.9"/>
+      <path d="M35 32 C30 20 52 14 62 26 C68 38 45 44 35 32 Z" fill="#5F7E63" opacity="0.95"/>
+      <path d="M22 45 C10 40 18 60 30 58 C42 56 34 38 22 45 Z" fill="#7B997F" opacity="0.85"/>
+      <path d="M52 62 C48 48 72 44 80 58 C86 70 62 76 52 62 Z" fill="#628266" opacity="0.9"/>
+      <path d="M42 85 C30 80 40 102 52 98 C64 94 54 78 42 85 Z" fill="#88A68C" opacity="0.8"/>
+      <path d="M68 98 C65 85 88 82 95 95 C100 106 80 112 68 98 Z" fill="#5A795E" opacity="0.92"/>
+      <path d="M78 128 C74 116 96 114 102 125 C106 134 90 140 78 128 Z" fill="#719075" opacity="0.88"/>
+    </svg>
+
+    <!-- Top-Right Botanical Olive / Eucalyptus Branch SVG -->
+    <svg class="botanical-branch-right" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M-10 -10 C30 20 60 70 85 130" stroke="#4A634E" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M15 12 C10 2 30 -5 38 8 C42 18 20 22 15 12 Z" fill="#6A8A6E" opacity="0.9"/>
+      <path d="M35 32 C30 20 52 14 62 26 C68 38 45 44 35 32 Z" fill="#5F7E63" opacity="0.95"/>
+      <path d="M22 45 C10 40 18 60 30 58 C42 56 34 38 22 45 Z" fill="#7B997F" opacity="0.85"/>
+      <path d="M52 62 C48 48 72 44 80 58 C86 70 62 76 52 62 Z" fill="#628266" opacity="0.9"/>
+      <path d="M42 85 C30 80 40 102 52 98 C64 94 54 78 42 85 Z" fill="#88A68C" opacity="0.8"/>
+      <path d="M68 98 C65 85 88 82 95 95 C100 106 80 112 68 98 Z" fill="#5A795E" opacity="0.92"/>
+      <path d="M78 128 C74 116 96 114 102 125 C106 134 90 140 78 128 Z" fill="#719075" opacity="0.88"/>
+    </svg>
 
     <!-- Hanging Golden Lantern (Left) -->
-    <div class="lantern-wrapper swing-lantern-left" style="top:0; left:6%;">
-      <div class="lantern-chain" style="height:110px;"></div>
-      <div class="lantern-body lantern-glow">
-        <svg viewBox="0 0 32 48" fill="none">
-          <path d="M16 2L8 10H24L16 2Z" fill="#F5D77F"/>
-          <path d="M6 10L3 22H29L26 10H6Z" fill="#D4AF37" stroke="#FFF4D0" stroke-width="0.8"/>
-          <path d="M3 22L7 38H25L29 22H3Z" fill="url(#lanternGlassGrad)" stroke="#D4AF37" stroke-width="0.8"/>
-          <path d="M7 38L16 46L25 38H7Z" fill="#A38018"/>
-          <circle cx="16" cy="30" r="4" fill="#FFF275" filter="drop-shadow(0 0 6px #FFA500)"/>
+    <div class="lantern-wrapper left swing-lantern-left">
+      <div class="lantern-chain" style="height: 110px;"></div>
+      <div class="lantern-body">
+        <svg viewBox="0 0 36 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Top Finial -->
+          <circle cx="18" cy="3" r="2" stroke="#C5A059" stroke-width="1.2" fill="#E8D39E"/>
+          <path d="M18 5 L14 10 H22 L18 5 Z" fill="#C5A059"/>
+          <!-- Dome Cap -->
+          <path d="M12 10 C14 8 22 8 24 10 L26 15 H10 L12 10 Z" fill="#DFCA95" stroke="#C5A059" stroke-width="0.8"/>
+          <!-- Glass Chamber with Warm Glow -->
+          <path d="M10 15 L8 36 H28 L26 15 H10 Z" fill="url(#leftLanternGlow)" stroke="#C5A059" stroke-width="1"/>
+          <!-- Glass Lattice Lines -->
+          <line x1="18" y1="15" x2="18" y2="36" stroke="#C5A059" stroke-width="0.8" opacity="0.6"/>
+          <line x1="10" y1="25" x2="26" y2="25" stroke="#C5A059" stroke-width="0.8" opacity="0.6"/>
+          <!-- Candle Light Center -->
+          <circle cx="18" cy="27" r="3.5" fill="#FFF9DF" filter="drop-shadow(0 0 5px #FFAE00)"/>
+          <!-- Bottom Base & Tassel -->
+          <path d="M8 36 L18 44 L28 36 H8 Z" fill="#B88E3E"/>
+          <line x1="18" y1="44" x2="18" y2="49" stroke="#B88E3E" stroke-width="1.4"/>
+          <circle cx="18" cy="50" r="1.5" fill="#C5A059"/>
           <defs>
-            <linearGradient id="lanternGlassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#F5D77F" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#AA820A" stop-opacity="0.9"/>
+            <linearGradient id="leftLanternGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFF5D6" stop-opacity="0.95"/>
+              <stop offset="50%" stop-color="#F7DE94" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.85"/>
             </linearGradient>
           </defs>
         </svg>
-        <div class="lantern-glow"></div>
       </div>
     </div>
 
     <!-- Hanging Golden Lantern (Right) -->
-    <div class="lantern-wrapper swing-lantern-right" style="top:0; right:7%;">
-      <div class="lantern-chain" style="height:140px;"></div>
-      <div class="lantern-body lantern-glow">
-        <svg viewBox="0 0 32 48" fill="none">
-          <path d="M16 2L8 10H24L16 2Z" fill="#F5D77F"/>
-          <path d="M6 10L3 22H29L26 10H6Z" fill="#D4AF37" stroke="#FFF4D0" stroke-width="0.8"/>
-          <path d="M3 22L7 38H25L29 22H3Z" fill="url(#lanternGlassGrad2)" stroke="#D4AF37" stroke-width="0.8"/>
-          <path d="M7 38L16 46L25 38H7Z" fill="#A38018"/>
-          <circle cx="16" cy="30" r="4" fill="#FFF275" filter="drop-shadow(0 0 6px #FFA500)"/>
+    <div class="lantern-wrapper right swing-lantern-right">
+      <div class="lantern-chain" style="height: 110px;"></div>
+      <div class="lantern-body">
+        <svg viewBox="0 0 36 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="3" r="2" stroke="#C5A059" stroke-width="1.2" fill="#E8D39E"/>
+          <path d="M18 5 L14 10 H22 L18 5 Z" fill="#C5A059"/>
+          <path d="M12 10 C14 8 22 8 24 10 L26 15 H10 L12 10 Z" fill="#DFCA95" stroke="#C5A059" stroke-width="0.8"/>
+          <path d="M10 15 L8 36 H28 L26 15 H10 Z" fill="url(#rightLanternGlow)" stroke="#C5A059" stroke-width="1"/>
+          <line x1="18" y1="15" x2="18" y2="36" stroke="#C5A059" stroke-width="0.8" opacity="0.6"/>
+          <line x1="10" y1="25" x2="26" y2="25" stroke="#C5A059" stroke-width="0.8" opacity="0.6"/>
+          <circle cx="18" cy="27" r="3.5" fill="#FFF9DF" filter="drop-shadow(0 0 5px #FFAE00)"/>
+          <path d="M8 36 L18 44 L28 36 H8 Z" fill="#B88E3E"/>
+          <line x1="18" y1="44" x2="18" y2="49" stroke="#B88E3E" stroke-width="1.4"/>
+          <circle cx="18" cy="50" r="1.5" fill="#C5A059"/>
           <defs>
-            <linearGradient id="lanternGlassGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#F5D77F" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#AA820A" stop-opacity="0.9"/>
+            <linearGradient id="rightLanternGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFF5D6" stop-opacity="0.95"/>
+              <stop offset="50%" stop-color="#F7DE94" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.85"/>
             </linearGradient>
           </defs>
         </svg>
-        <div class="lantern-glow"></div>
       </div>
     </div>
 
-    <!-- Floating Canvas Particles -->
-    <canvas id="goldParticlesCanvas" class="particles-canvas"></canvas>
-
+    <!-- Centered Islamic Pointed Arch Container -->
     <div class="container">
-      <div class="hero-content reveal-fade-up">
-        <!-- Islamic Bismillah Calligraphy Subtext -->
-        <div class="hero-kicker">
-          <span>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
-          <span style="color:var(--color-border-gold-strong);">·</span>
-          <span>Bismillah Ar-Rahman Ar-Rahim</span>
-        </div>
+      <div class="hero-arch-container reveal-fade-up">
+        <!-- Top Mosque Silhouette with Crescent & Minarets -->
+        <svg class="hero-mosque-silhouette" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Crescent Moon on Top of Main Dome -->
+          <path d="M100 8 C98.8 8 97.2 9 97 10.5 C98.5 10.8 99.5 12 99.5 13.5 C99.5 15.2 98 16.5 96.5 16.5 C98.5 18 101.5 17 102 14.5 C102.5 12 101.5 9.5 100 8 Z" fill="#1B4D3E"/>
+          <circle cx="100" cy="18" r="1.2" fill="#1B4D3E"/>
+          
+          <!-- Central Grand Dome -->
+          <path d="M82 45 C82 28 92 20 100 20 C108 20 118 28 118 45 Z" fill="#1B4D3E" opacity="0.9"/>
+          
+          <!-- Flanking Smaller Domes -->
+          <path d="M68 45 C68 33 75 27 82 27 C89 27 96 33 96 45 Z" fill="#245F4D" opacity="0.8"/>
+          <path d="M104 45 C104 33 111 27 118 27 C125 27 132 33 132 45 Z" fill="#245F4D" opacity="0.8"/>
+          
+          <!-- Outer Smaller Domes -->
+          <path d="M56 45 C56 36 62 31 68 31 C74 31 80 36 80 45 Z" fill="#2F705B" opacity="0.7"/>
+          <path d="M120 45 C120 36 126 31 132 31 C138 31 144 36 144 45 Z" fill="#2F705B" opacity="0.7"/>
 
-        <h1 class="hero-title">
-          Our Wedding <span class="shimmer-gold-text">Memories</span>
+          <!-- Minarets (Left & Right) -->
+          <!-- Left Main Minaret -->
+          <rect x="42" y="22" width="5" height="23" fill="#1B4D3E" opacity="0.85"/>
+          <polygon points="42,22 44.5,14 47,22" fill="#1B4D3E"/>
+          <rect x="40" y="27" width="9" height="2" fill="#C5A059" opacity="0.8"/>
+          
+          <!-- Right Main Minaret -->
+          <rect x="153" y="22" width="5" height="23" fill="#1B4D3E" opacity="0.85"/>
+          <polygon points="153,22 155.5,14 158,22" fill="#1B4D3E"/>
+          <rect x="151" y="27" width="9" height="2" fill="#C5A059" opacity="0.8"/>
+          
+          <!-- Far Left Mini Minaret -->
+          <rect x="25" y="32" width="4" height="13" fill="#245F4D" opacity="0.7"/>
+          <polygon points="25,32 27,25 29,32" fill="#245F4D"/>
+          
+          <!-- Far Right Mini Minaret -->
+          <rect x="171" y="32" width="4" height="13" fill="#245F4D" opacity="0.7"/>
+          <polygon points="171,32 173,25 175,32" fill="#245F4D"/>
+
+          <!-- Mosque Base Wall / Arch Openings -->
+          <rect x="20" y="45" width="160" height="14" fill="#1B4D3E" opacity="0.95"/>
+          <!-- Little Arches in base wall -->
+          <path d="M75 59 C75 54 78 51 81 51 C84 51 87 54 87 59 Z" fill="#FAF7F2"/>
+          <path d="M94 59 C94 52 97 48 100 48 C103 48 106 52 106 59 Z" fill="#FAF7F2"/>
+          <path d="M113 59 C113 54 116 51 119 51 C122 51 125 54 125 59 Z" fill="#FAF7F2"/>
+        </svg>
+
+        <!-- Main Heading: Our Wedding Memories -->
+        <h1 class="hero-main-title">
+          Our Wedding
+          <span class="title-memories">Memories</span>
         </h1>
 
-        <p class="hero-subtitle">
-          A timeless collection of our sacred Nikah ceremony, royal Walima celebration, intimate family moments, and wedding cinematography.
+        <!-- Rings Divider: ─── OO ─── -->
+        <div class="rings-divider">
+          <div class="rings-divider-line"></div>
+          <svg class="rings-icon" viewBox="0 0 34 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Left Ring -->
+            <ellipse cx="12" cy="10" rx="7" ry="7" stroke="#C5A059" stroke-width="1.8" fill="none"/>
+            <!-- Right Ring Intertwined -->
+            <ellipse cx="22" cy="10" rx="7" ry="7" stroke="#C5A059" stroke-width="1.8" fill="none"/>
+          </svg>
+          <div class="rings-divider-line"></div>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="hero-lead-text">
+          A private collection of our Nikah, Walima and family moments.
         </p>
 
-        <div class="hero-cta-group">
-          <a href="#galleries" class="btn-gold">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z"/>
+        <!-- Explore Galleries Pill CTA Button -->
+        <div>
+          <a href="#galleries" class="btn-explore-pill">
+            <!-- Gallery / Photo Frame Icon -->
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3" ry="3"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
             </svg>
             <span>Explore Galleries</span>
-          </a>
-          <a href="#security" class="btn-outline-gold">
-            <span>How It Works</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4 Animated 3D Folder Cards Section -->
-  <section class="folders-section" id="galleries">
-    <div class="container">
-      <div class="section-header reveal-fade-up">
-        <span class="section-kicker">Curated Collections</span>
-        <h2 class="section-title">Select a Private Gallery</h2>
-        <p class="section-subtitle">
-          To preserve privacy, all galleries are protected. Choose your album to verify your pre-approved invitation or access the folder.
-        </p>
-      </div>
-
-      <div class="folders-grid">
-        <!-- 1. Shaadi Folder Card -->
-        <div class="folder-card reveal-fade-up delay-100">
-          <div class="folder-cover-wrapper" onclick="window.selectFolder('shaadi')">
-            <img 
-              src="/src/assets/images/folder_shaadi_nikah_1794069445495.jpg" 
-              alt="Shaadi Nikah Ceremony" 
-              class="folder-cover-image"
-              loading="lazy"
-              referrerpolicy="no-referrer"
-            />
-            <div class="folder-cover-scrim"></div>
-          </div>
-          <div class="folder-content">
-            <span class="folder-kicker">Nikah Ceremony</span>
-            <h3 class="folder-title" onclick="window.selectFolder('shaadi')">1. Shaadi</h3>
-            <div class="folder-subtitle">The Sacred Vows & Qubool Hai</div>
-            <p class="folder-description">
-              The auspicious Nikah solemnization, legal signature, Quranic recitation, exchange of rings, and elder blessings.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: auto;">
-              <button class="btn-gold" style="width:100%;" onclick="window.selectFolder('shaadi')">
-                <span>View Private Gallery</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-              <a 
-                href="https://drive.google.com/drive/folders/1Bqv-OgFD2C95ta6dIZQ1bezzojP05f_c" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn-outline-gold" 
-                style="width:100%; text-align:center; padding:0.55rem; font-size:0.85rem;"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-                </svg>
-                <span>Open Google Drive Folder</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. Walima Folder Card -->
-        <div class="folder-card reveal-fade-up delay-200">
-          <div class="folder-cover-wrapper" onclick="window.selectFolder('walima')">
-            <img 
-              src="/src/assets/images/folder_walima_reception_1794069446459.jpg" 
-              alt="Walima Wedding Reception" 
-              class="folder-cover-image"
-              loading="lazy"
-              referrerpolicy="no-referrer"
-            />
-            <div class="folder-cover-scrim"></div>
-          </div>
-          <div class="folder-content">
-            <span class="folder-kicker">Wedding Reception</span>
-            <h3 class="folder-title" onclick="window.selectFolder('walima')">2. Walima</h3>
-            <div class="folder-subtitle">Royal Banquet & Celebration</div>
-            <p class="folder-description">
-              Grand banquet hall celebration with crystal chandeliers, emerald drapery, royal feast, and guest greetings.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: auto;">
-              <button class="btn-gold" style="width:100%;" onclick="window.selectFolder('walima')">
-                <span>View Private Gallery</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-              <a 
-                href="https://drive.google.com/drive/folders/1EWuMrnv-yChWEqjnYRvqGMkODioYXoNq" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn-outline-gold" 
-                style="width:100%; text-align:center; padding:0.55rem; font-size:0.85rem;"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-                </svg>
-                <span>Open Google Drive Folder</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. Ghar Folder Card -->
-        <div class="folder-card reveal-fade-up delay-300">
-          <div class="folder-cover-wrapper" onclick="window.selectFolder('ghar')">
-            <img 
-              src="/src/assets/images/folder_ghar_family_1794069447445.jpg" 
-              alt="Ghar Family Moments" 
-              class="folder-cover-image"
-              loading="lazy"
-              referrerpolicy="no-referrer"
-            />
-            <div class="folder-cover-scrim"></div>
-          </div>
-          <div class="folder-content">
-            <span class="folder-kicker">Family Moments & Mehndi</span>
-            <h3 class="folder-title" onclick="window.selectFolder('ghar')">3. Ghar</h3>
-            <div class="folder-subtitle">Intimate Henna & Celebrations</div>
-            <p class="folder-description">
-              Candid laughter at home, intricate bridal mehndi, golden tea gatherings, singing traditional geet, and family joy.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: auto;">
-              <button class="btn-gold" style="width:100%;" onclick="window.selectFolder('ghar')">
-                <span>View Private Gallery</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-              <a 
-                href="https://drive.google.com/drive/folders/1USSkmlp613tl2o5L-j7ueDnEe5Ak3Q3T" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn-outline-gold" 
-                style="width:100%; text-align:center; padding:0.55rem; font-size:0.85rem;"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-                </svg>
-                <span>Open Google Drive Folder</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. Vlog Folder Card -->
-        <div class="folder-card reveal-fade-up delay-400">
-          <div class="folder-cover-wrapper" onclick="window.selectFolder('vlog')">
-            <img 
-              src="/src/assets/images/folder_vlog_cinema_1794069447312.jpg" 
-              alt="Vlog Wedding Videos" 
-              class="folder-cover-image"
-              loading="lazy"
-              referrerpolicy="no-referrer"
-            />
-            <div class="folder-cover-scrim"></div>
-          </div>
-          <div class="folder-content">
-            <span class="folder-kicker">Cinematography Films</span>
-            <h3 class="folder-title" onclick="window.selectFolder('vlog')">4. Vlog</h3>
-            <div class="folder-subtitle">Cinematic Highlights & Speeches</div>
-            <p class="folder-description">
-              High-definition cinematic films, couple entrance, family testimonials, and 4K wedding documentary highlights.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: auto;">
-              <button class="btn-gold" style="width:100%;" onclick="window.selectFolder('vlog')">
-                <span>View Private Gallery</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-              <a 
-                href="https://drive.google.com/drive/folders/1Sgs9rd39gio0DJsgLYhHbgdN-PgvelLE" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn-outline-gold" 
-                style="width:100%; text-align:center; padding:0.55rem; font-size:0.85rem;"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-                </svg>
-                <span>Open Google Drive Folder</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Security & How It Works Section -->
-  <section class="section" id="security" style="padding:4rem 0; border-top:1px solid var(--color-border-gold); background:rgba(2, 38, 29, 0.45);">
-    <div class="container">
-      <div class="section-header reveal-fade-up">
-        <span class="section-kicker">Private Wedding Security</span>
-        <h2 class="section-title">How Guest Verification Works</h2>
-        <p class="section-subtitle">
-          We protect our family memories by ensuring only pre-approved attendees can view specific event folders.
-        </p>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;">
-        <div class="glass-card reveal-fade-up delay-100">
-          <div style="width:48px; height:48px; border-radius:50%; border:1px solid var(--color-gold); display:flex; align-items:center; justify-content:center; color:var(--color-gold); margin-bottom:1.25rem; background:rgba(212,175,55,0.1);">
-            <span style="font-family:var(--font-display); font-size:1.2rem; font-weight:700;">1</span>
-          </div>
-          <h3 style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--color-ivory);">Pre-Approved Guest Match</h3>
-          <p style="color:var(--color-text-secondary); font-size:0.9rem; line-height:1.5;">
-            Enter your name, email, and 10-digit mobile number. Our backend securely checks against the host's approved list and verifies permissions.
-          </p>
-        </div>
-
-        <div class="glass-card reveal-fade-up delay-200">
-          <div style="width:48px; height:48px; border-radius:50%; border:1px solid var(--color-gold); display:flex; align-items:center; justify-content:center; color:var(--color-gold); margin-bottom:1.25rem; background:rgba(212,175,55,0.1);">
-            <span style="font-family:var(--font-display); font-size:1.2rem; font-weight:700;">2</span>
-          </div>
-          <h3 style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--color-ivory);">Instant Selfie Snapshot</h3>
-          <p style="color:var(--color-text-secondary); font-size:0.9rem; line-height:1.5;">
-            Smile for a quick front-camera selfie. The photo is logged in the host's private audit vault for security, preventing unauthorized link sharing.
-          </p>
-        </div>
-
-        <div class="glass-card reveal-fade-up delay-300">
-          <div style="width:48px; height:48px; border-radius:50%; border:1px solid var(--color-gold); display:flex; align-items:center; justify-content:center; color:var(--color-gold); margin-bottom:1.25rem; background:rgba(212,175,55,0.1);">
-            <span style="font-family:var(--font-display); font-size:1.2rem; font-weight:700;">3</span>
-          </div>
-          <h3 style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--color-ivory);">Instant Private Access</h3>
-          <p style="color:var(--color-text-secondary); font-size:0.9rem; line-height:1.5;">
-            No waiting for manual admin approval! You are granted instant access to browse, zoom, view high-definition videos, or access Google Drive.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="main-footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          Our Nikah <span>Memories</span>
-        </div>
-
-        <p class="footer-duas">
-          "Bārak-Allāhu laka wa bāraka ‘alayka wa jama‘a baynakumā fī khayr"<br/>
-          <span style="font-size:0.85rem; color:var(--color-text-muted);">
-            (May Allah bless you and shower His blessings upon you and unite you both in goodness)
-          </span>
-        </p>
-
-        <ul class="footer-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="#galleries">Galleries</a></li>
-          <li><a href="#security">Security</a></li>
-        </ul>
-
-        <div class="footer-copyright">
-          &copy; 2026 Our Nikah Memories · Zayd & Aaliya Wedding Celebration. All rights reserved.
-        </div>
-
-        <!-- Small Discreet Admin Panel Link at Bottom -->
-        <div style="margin-top: 0.5rem;">
-          <a href="/pages/admin-login.html" style="font-size: 0.75rem; color: rgba(212, 175, 55, 0.45); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; transition: color 0.2s;" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(212, 175, 55, 0.45)'">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            <!-- Arrow Right Icon -->
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-            <span>Admin Panel</span>
           </a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Select a Private Gallery (2x2 Grid from Reference Image) -->
+  <section class="gallery-selection-section" id="galleries">
+    <div class="container">
+      <!-- Centered Section Divider -->
+      <div class="gallery-section-divider reveal-fade-up">
+        <div class="gallery-section-divider-line"></div>
+        <h2 class="gallery-section-title">Select a Private Gallery</h2>
+        <div class="gallery-section-divider-line"></div>
+      </div>
+
+      <!-- 2x2 Grid of Rounded White Cards -->
+      <div class="cards-2x2-grid">
+        <!-- 1. Shaadi Card -->
+        <div class="gallery-row-card reveal-fade-up" onclick="window.selectFolder('shaadi')" role="button" tabindex="0" aria-label="Shaadi - Nikah Ceremony Gallery">
+          <div class="card-icon-box">
+            <!-- Wedding Ring with Sparkling Diamond Icon -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Ring Band -->
+              <ellipse cx="12" cy="14" rx="7" ry="7"/>
+              <!-- Diamond Gem on Top -->
+              <path d="M12 3 L15.5 7 L12 8.5 L8.5 7 Z"/>
+            </svg>
+          </div>
+          <div class="card-info-box">
+            <h3 class="card-title-text">Shaadi</h3>
+            <div class="card-subtitle-text">Nikah Ceremony</div>
+          </div>
+          <div class="card-chevron-btn" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 2. Walima Card -->
+        <div class="gallery-row-card reveal-fade-up" onclick="window.selectFolder('walima')" role="button" tabindex="0" aria-label="Walima - Wedding Reception Gallery">
+          <div class="card-icon-box">
+            <!-- Serving Cloche / Platter Food Dome Icon -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Top Knob -->
+              <path d="M12 4 L12 7"/>
+              <circle cx="12" cy="4" r="1.5" fill="currentColor"/>
+              <!-- Cloche Dome -->
+              <path d="M4 17 C4 11 7.5 7 12 7 C16.5 7 20 11 20 17 Z"/>
+              <!-- Base Serving Tray Line -->
+              <path d="M2 17 L22 17"/>
+            </svg>
+          </div>
+          <div class="card-info-box">
+            <h3 class="card-title-text">Walima</h3>
+            <div class="card-subtitle-text">Wedding Reception</div>
+          </div>
+          <div class="card-chevron-btn" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 3. Ghar Card -->
+        <div class="gallery-row-card reveal-fade-up" onclick="window.selectFolder('ghar')" role="button" tabindex="0" aria-label="Ghar - Family Moments Gallery">
+          <div class="card-icon-box">
+            <!-- Family Group / Two People Silhouette Icon -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Person 1 -->
+              <circle cx="8" cy="8" r="3.5"/>
+              <path d="M2.5 19 C2.5 15.5 5 13.5 8 13.5 C11 13.5 13.5 15.5 13.5 19 Z"/>
+              <!-- Person 2 -->
+              <circle cx="16" cy="9" r="3"/>
+              <path d="M14 19 C14.2 16.5 16 15 18 15 C20 15 21.5 16.5 21.5 19 Z"/>
+            </svg>
+          </div>
+          <div class="card-info-box">
+            <h3 class="card-title-text">Ghar</h3>
+            <div class="card-subtitle-text">Family Moments</div>
+          </div>
+          <div class="card-chevron-btn" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 4. Vlog Card -->
+        <div class="gallery-row-card reveal-fade-up" onclick="window.selectFolder('vlog')" role="button" tabindex="0" aria-label="Vlog - Wedding Videos Gallery">
+          <div class="card-icon-box">
+            <!-- Video Play Triangle Polygon in Rounded Square Icon -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Rounded Square Frame -->
+              <rect x="3" y="3" width="18" height="18" rx="4"/>
+              <!-- Play Triangle -->
+              <polygon points="10 8 16 12 10 16 10 8" fill="none" stroke="currentColor" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-info-box">
+            <h3 class="card-title-text">Vlog</h3>
+            <div class="card-subtitle-text">Wedding Videos</div>
+          </div>
+          <div class="card-chevron-btn" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Google Drive Direct Cloud Access Strip -->
+      <div style="margin-top: 2.25rem; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: var(--color-text-muted);">
+        <span style="font-weight: 600; color: var(--color-primary); display: inline-flex; align-items: center; gap: 0.35rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--color-gold);">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+          Direct Google Drive Folders:
+        </span>
+        <a href="https://drive.google.com/drive/folders/1Bqv-OgFD2C95ta6dIZQ1bezzojP05f_c" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="padding: 0.35rem 0.9rem; font-size: 0.8rem;">Shaadi Drive ↗</a>
+        <a href="https://drive.google.com/drive/folders/1EWuMrnv-yChWEqjnYRvqGMkODioYXoNq" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="padding: 0.35rem 0.9rem; font-size: 0.8rem;">Walima Drive ↗</a>
+        <a href="https://drive.google.com/drive/folders/1USSkmlp613tl2o5L-j7ueDnEe5Ak3Q3T" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="padding: 0.35rem 0.9rem; font-size: 0.8rem;">Ghar Drive ↗</a>
+        <a href="https://drive.google.com/drive/folders/1Sgs9rd39gio0DJsgLYhHbgdN-PgvelLE" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="padding: 0.35rem 0.9rem; font-size: 0.8rem;">Vlog Drive ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / How Verification Works Section -->
+  <section id="about" style="padding: 4rem 0 3rem 0; border-top: 1px solid rgba(197, 160, 89, 0.2); background: rgba(250, 247, 242, 0.7);">
+    <div class="container" style="max-width: 880px;">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-gold); font-weight: 700;">Private & Sacred</span>
+        <h2 style="font-size: 2rem; color: var(--color-primary); margin-top: 0.35rem;">Guest Invitation Verification</h2>
+        <p style="color: var(--color-text-body); max-width: 540px; margin: 0.5rem auto 0 auto; font-size: 0.95rem;">
+          To safeguard family privacy, memories are shared exclusively with invited family and guests.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+        <div class="glass-card" style="text-align: center; padding: 1.75rem 1.25rem;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-icon-emerald); color: #FFF; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-weight: 700;">1</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.4rem; color: var(--color-primary);">Select Folder</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-muted);">Choose Shaadi, Walima, Ghar, or Vlog to begin verification.</p>
+        </div>
+
+        <div class="glass-card" style="text-align: center; padding: 1.75rem 1.25rem;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-icon-emerald); color: #FFF; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-weight: 700;">2</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.4rem; color: var(--color-primary);">Verify Contact</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-muted);">Enter your Name and 10-digit Mobile Number matching your invitation.</p>
+        </div>
+
+        <div class="glass-card" style="text-align: center; padding: 1.75rem 1.25rem;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-icon-emerald); color: #FFF; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-weight: 700;">3</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.4rem; color: var(--color-primary);">Instant Selfie</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-muted);">Take a quick front-camera selfie to securely unlock instant gallery access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scalloped Emerald Footer (Matching Reference Image) -->
+  <footer class="reference-footer">
+    <!-- Scalloped Arch Pointed Curve SVG Cutout at top of footer -->
+    <svg class="footer-scalloped-arch" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 40 L0 18 Q360 18 640 18 Q720 0 800 18 Q1080 18 1440 18 L1440 40 Z" fill="#0C3829"/>
+    </svg>
+
+    <div class="container">
+      <!-- Islamic Wedding Dua in White Italic Serif -->
+      <p class="footer-dua-text">
+        BārakAllāhu laka wa bāraka ‘alayka<br/>
+        wa jama‘a baynakumā fī khayr
+      </p>
+
+      <!-- Golden Diamond Divider Motif: ─── ◇ ─── -->
+      <div class="footer-diamond-motif">
+        <div class="footer-diamond-line"></div>
+        <svg class="footer-diamond-icon" viewBox="0 0 16 16" fill="currentColor">
+          <polygon points="8,1 15,8 8,15 1,8"/>
+        </svg>
+        <div class="footer-diamond-line"></div>
+      </div>
+
+      <!-- Copyright Text -->
+      <div class="footer-copyright-text">
+        &copy; 2026 Our Nikah Memories. All Rights Reserved.
+      </div>
+
+      <!-- Small Discreet Admin Panel Link at Bottom -->
+      <div>
+        <a href="/pages/admin-login.html" class="footer-admin-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>Admin Panel</span>
+        </a>
       </div>
     </div>
   </footer>
