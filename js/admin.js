@@ -3,10 +3,20 @@
  * Pure Vanilla JavaScript (ES6+)
  * Handles administrator authentication, statistics visualization, member management (CRUD),
  * access logs audit with selfie preview modal, and security settings.
+ * Supports both Express server and Netlify static hosting via localData hybrid layer.
  */
 
-import { getAdminToken, saveAdminSession, clearAdminSession, requireAdminAccess } from './auth.js';
+import { getAdminToken, clearAdminSession, requireAdminAccess } from './auth.js';
 import { showToast, openModal, closeModal, soundFX } from './app.js';
+import {
+  apiAdminLogin,
+  apiGetStats,
+  apiGetMembers,
+  apiAddMember,
+  apiDeleteMember,
+  apiToggleMember,
+  apiGetLogs,
+} from './localData.js';
 
 // 1. Admin Login Page Controller
 export function initAdminLogin() {
@@ -16,7 +26,6 @@ export function initAdminLogin() {
   const rememberCheckbox = document.getElementById('rememberMe');
   const loginBtn = document.getElementById('adminLoginSubmitBtn');
   const alertBox = document.getElementById('adminLoginAlert');
-
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -38,35 +47,29 @@ export function initAdminLogin() {
       loginBtn.innerHTML = 'Authenticating...';
 
       try {
-        const res = await fetch('/api/admin/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
+        const result = await apiAdminLogin(email, password, rememberCheckbox?.checked);
 
-        const data = await res.json();
-
-        if (res.ok && data.success) {
-          saveAdminSession(data.adminToken, data.user, rememberCheckbox?.checked);
+        if (result.success) {
           showToast('Welcome back, Admin!', 'success');
+          soundFX.playChime();
           setTimeout(() => {
             window.location.href = '/pages/admin-dashboard.html';
-          }, 500);
+          }, 400);
         } else {
           if (alertBox) {
             alertBox.style.display = 'flex';
-            alertBox.textContent = data.error || 'Invalid admin credentials.';
+            alertBox.textContent = result.error || 'Invalid admin credentials.';
           }
           loginBtn.disabled = false;
-          loginBtn.innerHTML = 'Enter Admin Dashboard';
+          loginBtn.innerHTML = 'Sign In to Dashboard';
         }
       } catch {
         if (alertBox) {
           alertBox.style.display = 'flex';
-          alertBox.textContent = 'Network error while attempting login.';
+          alertBox.textContent = 'Authentication error. Please check your credentials.';
         }
         loginBtn.disabled = false;
-        loginBtn.innerHTML = 'Enter Admin Dashboard';
+        loginBtn.innerHTML = 'Sign In to Dashboard';
       }
     });
   }
@@ -75,15 +78,11 @@ export function initAdminLogin() {
 // 2. Admin Dashboard Page Controller
 export async function initAdminDashboard() {
   if (!requireAdminAccess()) return;
-  const token = getAdminToken() || '';
 
   try {
-    const res = await fetch('/api/admin/stats', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const data = await apiGetStats();
 
-    const data = await res.json();
-    if (!res.ok || !data.success) {
+    if (!data.success) {
       clearAdminSession();
       window.location.href = '/pages/admin-login.html';
       return;
@@ -101,29 +100,9 @@ export async function initAdminDashboard() {
     if (statVideos) statVideos.textContent = data.stats.totalVideos.toString();
     if (statStorage) statStorage.textContent = data.stats.totalStorageUsed;
 
-    const folderStatsContainer = document.getElementById('adminFolderStats');
-    if (folderStatsContainer) {
-      folderStatsContainer.innerHTML = data.folderStats
-        .map(
-          (f) => `
-          <div style="background:var(--color-surface-glass); border:1px solid var(--color-border-gold); border-radius:var(--radius-md); padding:1.25rem;">
-            <h4 style="font-size:1.1rem; color:var(--color-ivory); margin-bottom:0.4rem;">${f.title}</h4>
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--color-text-muted); margin-bottom:0.75rem;">
-              <span>Private Vault</span>
-              <span style="color:var(--color-gold);">${f.accessCount} Access Grants</span>
-            </div>
-            <a href="/pages/gallery.html?folder=${f.id}" class="btn-outline-gold" style="width:100%; text-align:center; padding:0.4rem; font-size:0.8rem;">
-              Preview Gallery
-            </a>
-          </div>
-        `
-        )
-        .join('');
-    }
-
     const recentLogsTable = document.getElementById('adminRecentLogsBody');
     if (recentLogsTable) {
-      recentLogsTable.innerHTML = data.recentLogs
+      recentLogsTable.innerHTML = (data.recentLogs || [])
         .map(
           (log) => `
           <tr>
@@ -136,8 +115,8 @@ export async function initAdminDashboard() {
               />
             </td>
             <td>
-              <div style="font-weight:600; color:var(--color-ivory);">${log.name}</div>
-              <div style="font-size:0.8rem; color:var(--color-text-muted);">${log.email}</div>
+              <div style="font-weight:600; color:var(--color-primary);">${log.name}</div>
+              <div style="font-size:0.8rem; color:var(--color-text-muted);">${log.email || '—'}</div>
             </td>
             <td>
               <span class="perm-tag">${log.folderName}</span>
@@ -166,7 +145,6 @@ let cachedMembers = [];
 
 export async function initAdminMembers() {
   if (!requireAdminAccess()) return;
-  const token = getAdminToken() || '';
 
   const tableBody = document.getElementById('membersTableBody');
   const searchInput = document.getElementById('membersSearchInput');
@@ -176,11 +154,8 @@ export async function initAdminMembers() {
 
   async function loadMembers() {
     try {
-      const res = await fetch('/api/admin/members', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
+      const data = await apiGetMembers();
+      if (data.success) {
         cachedMembers = data.members;
         renderMembers(cachedMembers);
       }
@@ -201,13 +176,13 @@ export async function initAdminMembers() {
         (m) => `
         <tr>
           <td>
-            <div style="font-weight:600; color:var(--color-ivory);">${m.name}</div>
+            <div style="font-weight:600; color:var(--color-primary);">${m.name}</div>
             <div style="font-size:0.8rem; color:var(--color-text-muted);">Added: ${new Date(m.createdAt).toLocaleDateString()}</div>
           </td>
-          <td><code style="color:var(--color-gold); font-family:var(--font-mono);">${m.phone}</code></td>
+          <td><code style="color:var(--color-primary); font-weight:600;">${m.phone}</code></td>
           <td>${m.email || '<span style="color:var(--color-text-muted); font-size:0.8rem;">—</span>'}</td>
           <td>
-            ${m.permissions.map((p) => `<span class="perm-tag">${p}</span>`).join('')}
+            ${(m.permissions || []).map((p) => `<span class="perm-tag">${p}</span>`).join('')}
           </td>
           <td>
             <span class="status-badge ${m.status}">
@@ -225,7 +200,7 @@ export async function initAdminMembers() {
               </button>
               <button 
                 class="btn-outline-gold" 
-                style="padding:0.35rem 0.6rem; font-size:0.78rem; border-color:rgba(239, 68, 68, 0.5); color:#FCA5A5;" 
+                style="padding:0.35rem 0.6rem; font-size:0.78rem; border-color:rgba(239, 68, 68, 0.5); color:#EF4444;" 
                 onclick="window.deleteMember('${m.id}', '${m.name}')"
               >
                 Delete
@@ -244,7 +219,7 @@ export async function initAdminMembers() {
       const filtered = cachedMembers.filter(
         (m) =>
           m.name.toLowerCase().includes(q) ||
-          m.email.toLowerCase().includes(q) ||
+          (m.email && m.email.toLowerCase().includes(q)) ||
           m.phone.includes(q)
       );
       renderMembers(filtered);
@@ -267,34 +242,23 @@ export async function initAdminMembers() {
         document.querySelectorAll('input[name="newMemberPerms"]:checked')
       ).map((el) => el.value);
 
-      if (checkedPerms.length === 0) {
-        showToast('Please select at least one permitted folder.', 'error');
-        return;
-      }
+      const perms = checkedPerms.length > 0 ? checkedPerms : ['shaadi', 'walima', 'ghar', 'vlog'];
 
       try {
-        const res = await fetch('/api/admin/members', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            phone,
-            permissions: checkedPerms,
-          }),
+        const res = await apiAddMember({
+          name,
+          email,
+          phone,
+          permissions: perms,
         });
 
-        const data = await res.json();
-        if (res.ok && data.success) {
+        if (res.success) {
           showToast(`Member ${name} added successfully!`, 'success');
           closeModal('addMemberModal');
           addMemberForm.reset();
           await loadMembers();
         } else {
-          showToast(data.error || 'Failed to add member.', 'error');
+          showToast(res.error || 'Failed to add member.', 'error');
         }
       } catch {
         showToast('Error saving member.', 'error');
@@ -308,7 +272,6 @@ export async function initAdminMembers() {
 // 4. Admin Access Logs Page Controller
 export async function initAdminAccessLogs() {
   if (!requireAdminAccess()) return;
-  const token = getAdminToken() || '';
 
   const tableBody = document.getElementById('accessLogsTableBody');
   const searchInput = document.getElementById('logsSearchInput');
@@ -317,11 +280,8 @@ export async function initAdminAccessLogs() {
   let logsList = [];
 
   try {
-    const res = await fetch('/api/admin/logs', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
+    const data = await apiGetLogs();
+    if (data.success) {
       logsList = data.logs;
       renderLogs(logsList);
     }
@@ -349,10 +309,10 @@ export async function initAdminAccessLogs() {
             />
           </td>
           <td>
-            <div style="font-weight:600; color:var(--color-ivory);">${l.name}</div>
-            <div style="font-size:0.8rem; color:var(--color-text-muted);">${l.email}</div>
+            <div style="font-weight:600; color:var(--color-primary);">${l.name}</div>
+            <div style="font-size:0.8rem; color:var(--color-text-muted);">${l.email || '—'}</div>
           </td>
-          <td><code style="color:var(--color-gold); font-family:var(--font-mono);">${l.phone}</code></td>
+          <td><code style="color:var(--color-primary); font-weight:600;">${l.phone}</code></td>
           <td><span class="perm-tag">${l.folderName}</span></td>
           <td style="font-size:0.85rem;">${new Date(l.timestamp).toLocaleString()}</td>
           <td style="font-size:0.8rem; color:var(--color-text-muted); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
@@ -376,7 +336,7 @@ export async function initAdminAccessLogs() {
       const filtered = logsList.filter(
         (l) =>
           l.name.toLowerCase().includes(q) ||
-          l.email.toLowerCase().includes(q) ||
+          (l.email && l.email.toLowerCase().includes(q)) ||
           l.phone.includes(q) ||
           l.folderName.toLowerCase().includes(q)
       );
@@ -399,7 +359,7 @@ export async function initAdminAccessLogs() {
         l.phone,
         `"${l.folderName}"`,
         l.timestamp,
-        `"${l.deviceInfo.replace(/"/g, '""')}"`,
+        `"${(l.deviceInfo || '').replace(/"/g, '""')}"`,
         l.status,
       ]);
 
@@ -432,15 +392,10 @@ window.showSelfieModal = (imgUrl, name, folder = '', date = '') => {
 };
 
 window.toggleMemberStatus = async (id) => {
-  const token = getAdminToken() || '';
   try {
-    const res = await fetch(`/api/admin/members/${id}/toggle`, {
-      method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
-      showToast(`Member is now ${data.member.status}.`, 'info');
+    const res = await apiToggleMember(id);
+    if (res.success) {
+      showToast(`Member is now ${res.member.status}.`, 'info');
       initAdminMembers();
     }
   } catch {
@@ -450,14 +405,9 @@ window.toggleMemberStatus = async (id) => {
 
 window.deleteMember = async (id, name) => {
   if (!confirm(`Are you sure you want to remove ${name} from approved members?`)) return;
-  const token = getAdminToken() || '';
   try {
-    const res = await fetch(`/api/admin/members/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
+    const res = await apiDeleteMember(id);
+    if (res.success) {
       showToast(`Member ${name} deleted.`, 'info');
       initAdminMembers();
     }

@@ -2,11 +2,12 @@
  * Our Nikah Memories - Guest Details Verification (Step 1)
  * Pure Vanilla JavaScript (ES6+)
  * Handles input normalization, 10-digit mobile validation, pre-approved contact matching,
- * and folder permission validation via /api/verify.
+ * and folder permission validation via hybrid localData layer.
  */
 
 import { saveGuestVerification } from './auth.js';
 import { showToast } from './app.js';
+import { apiVerifyGuest } from './localData.js';
 
 const FOLDERS_MAP = {
   shaadi: {
@@ -63,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <div style="margin-bottom: 0.35rem;">
         <span class="section-kicker" style="color:var(--color-gold); font-size:0.8rem; letter-spacing:0.12em;">${folder.badge}</span>
       </div>
-      <h2 style="font-size:clamp(1.5rem, 4vw, 1.85rem); margin-bottom:0.35rem; color:var(--color-ivory);">${folder.title}</h2>
-      <p style="color:var(--color-gold-light); font-size:0.9rem; margin-bottom:0.85rem;">${folder.description}</p>
+      <h2 style="font-size:clamp(1.5rem, 4vw, 1.85rem); margin-bottom:0.35rem; color:var(--color-primary);">${folder.title}</h2>
+      <p style="color:var(--color-gold-script); font-size:0.9rem; margin-bottom:0.85rem;">${folder.description}</p>
       <div>
         <a href="${folder.driveUrl}" target="_blank" rel="noopener noreferrer" class="btn-outline-gold" style="font-size:0.8rem; padding:0.4rem 0.85rem; display:inline-flex; align-items:center; gap:0.4rem;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
@@ -144,23 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       try {
-        const response = await fetch('/api/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: rawName,
-            email: rawEmail,
-            phone: rawPhone,
-            folderId,
-          }),
-        });
+        const result = await apiVerifyGuest(rawName, rawEmail, rawPhone, folderId);
 
-        const data = await response.json();
-
-        if (response.ok && data.success) {
+        if (result.success) {
           saveGuestVerification({
-            verificationToken: data.verificationToken,
-            member: data.member,
+            verificationToken: result.data.verificationToken,
+            member: result.data.member,
             folderId,
           });
 
@@ -168,14 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
           setTimeout(() => {
             window.location.href = `/pages/selfie.html?folder=${folderId}`;
-          }, 600);
+          }, 500);
         } else {
-          showAlert(data.error || 'Sorry! Your details could not be verified. Please check your information.');
+          showAlert(result.error || 'Sorry! Your details could not be verified. Please check your information.');
           verifyBtn.disabled = false;
           verifyBtn.innerHTML = originalBtnText;
         }
       } catch {
-        showAlert('Connection error while contacting the verification server. Please try again.');
+        showAlert('Verification could not be completed. Please check your name and mobile number.');
         verifyBtn.disabled = false;
         verifyBtn.innerHTML = originalBtnText;
       }

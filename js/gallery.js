@@ -8,6 +8,7 @@
 
 import { getGuestAccessToken, getGuestAccessData, getAdminToken, clearGuestSession } from './auth.js';
 import { showToast, soundFX } from './app.js';
+import { apiGetGalleryMedia } from './localData.js';
 
 let currentMediaList = [];
 let filteredMediaList = [];
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     guestGreeting.textContent = adminToken ? 'Wedding Administrator' : guestData?.name || 'Honored Guest';
   }
 
-  // Load Folder Content from Server
+  // Load Folder Content from Server / localData
   await loadGalleryMedia(folderId, guestToken || adminToken || '');
 
   // 2. Setup Filter Tabs
@@ -97,20 +98,14 @@ async function loadGalleryMedia(folderId, token) {
   const folderDescription = document.getElementById('galleryFolderDesc');
 
   try {
-    const response = await fetch(`/api/gallery/${folderId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const result = await apiGetGalleryMedia(folderId, token);
 
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      showToast(data.error || 'Failed to load private media.', 'error');
+    if (!result.success || !result.data) {
+      showToast('Failed to load private media.', 'error');
       if (grid) {
         grid.innerHTML = `
           <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">
-            <p style="color:var(--color-danger); font-size:1.1rem; margin-bottom:1rem;">${data.error || 'Access Denied'}</p>
+            <p style="color:var(--color-danger); font-size:1.1rem; margin-bottom:1rem;">Access Denied or Media Unavailable</p>
             <a href="/pages/verify.html?folder=${folderId}" class="btn-gold">Verify Credentials Again</a>
           </div>
         `;
@@ -118,12 +113,13 @@ async function loadGalleryMedia(folderId, token) {
       return;
     }
 
-    const folder = data.folder;
-    currentMediaList = data.media;
+    const data = result.data;
+    const folder = data.folder || { title: folderId.toUpperCase(), subtitle: 'Private Album' };
+    currentMediaList = data.media || [];
 
     if (folderTitle) folderTitle.textContent = folder.title;
-    if (folderSubtitle) folderSubtitle.textContent = folder.subtitle;
-    if (folderDescription) folderDescription.textContent = folder.description;
+    if (folderSubtitle && folder.subtitle) folderSubtitle.textContent = folder.subtitle;
+    if (folderDescription && folder.description) folderDescription.textContent = folder.description;
 
     const driveFolderBtn = document.getElementById('galleryDriveFolderBtn');
     if (driveFolderBtn && folder.driveUrl) {
@@ -133,7 +129,7 @@ async function loadGalleryMedia(folderId, token) {
 
     applyFilters();
   } catch {
-    showToast('Connection error while fetching gallery.', 'error');
+    showToast('Failed to load gallery items.', 'error');
   }
 }
 

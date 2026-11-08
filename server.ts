@@ -101,13 +101,220 @@ const FOLDERS = [
 // 2. Pre-Approved Contacts Database
 const APPROVED_MEMBERS: ApprovedMember[] = [
   {
-    id: 'mem_0',
+    id: 'mem_admin_salman',
     name: 'Ahmad Salman',
     email: 'ahmadsalman9939@gmail.com',
     phone: '9939000000',
     permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
     status: 'active',
     createdAt: '2026-11-01T00:00:00Z',
+  },
+  {
+    id: 'mem_salman_ahmad',
+    name: 'Salman Ahmad',
+    email: 'salman.ahmad@guest.local',
+    phone: '7307141956',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_ilman',
+    name: 'Ilman',
+    email: 'ilman@guest.local',
+    phone: '9691202065',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_farhan_ahmad',
+    name: 'Farhan Ahmad',
+    email: 'farhan.ahmad@guest.local',
+    phone: '7398508983',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_ilma',
+    name: 'Ilma',
+    email: 'ilma@guest.local',
+    phone: '9621331827',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_anjum_shaikh',
+    name: 'Anjum Shaikh',
+    email: 'anjum.shaikh@guest.local',
+    phone: '8446198135',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_abul_faiz',
+    name: 'Abul Faiz',
+    email: 'abul.faiz@guest.local',
+    phone: '7617016790',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_mohd_azim',
+    name: 'Mohd Azim',
+    email: 'mohd.azim@guest.local',
+    phone: '7860552576',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_sadaf',
+    name: 'Sadaf',
+    email: 'sadaf@guest.local',
+    phone: '6390127806',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_saloni',
+    name: 'Saloni',
+    email: 'saloni@guest.local',
+    phone: '9889505896',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_azhan_ahmad',
+    name: 'Azhan Ahmad',
+    email: 'azhan.ahmad@guest.local',
+    phone: '7379656174',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_saba_parveen',
+    name: 'Saba Parveen',
+    email: 'saba.parveen@guest.local',
+    phone: '7218482388',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_saba',
+    name: 'Saba',
+    email: 'saba@guest.local',
+    phone: '8174841423',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_saheba',
+    name: 'Saheba',
+    email: 'saheba@guest.local',
+    phone: '8574225570',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_mohd_saif',
+    name: 'Mohd Saif',
+    email: 'mohd.saif@guest.local',
+    phone: '8726446174',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_sana_parveen',
+    name: 'Sana parveen',
+    email: 'sana.parveen@guest.local',
+    phone: '8626016790',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_wasim',
+    name: 'Wasim',
+    email: 'wasim@guest.local',
+    phone: '8115177070',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_tabassum',
+    name: 'Tabassum',
+    email: 'tabassum@guest.local',
+    phone: '9208552576',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_arshiya_begum',
+    name: 'Arshiya begum',
+    email: 'arshiya.begum@guest.local',
+    phone: '8828145780',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_asfaq_ahmad',
+    name: 'Asfaq Ahmad',
+    email: 'asfaq.ahmad@guest.local',
+    phone: '9410391755',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_yasmeen_khatoon',
+    name: 'Yasmeen khatoon',
+    email: 'yasmeen.khatoon@guest.local',
+    phone: '6391010951',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_sadaf_anjum',
+    name: 'Sadaf Anjum',
+    email: 'sadaf.anjum@guest.local',
+    phone: '8171239984',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_sagufa',
+    name: 'Sagufa',
+    email: 'sagufa@guest.local',
+    phone: '8400739211',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
+  },
+  {
+    id: 'mem_zafar_azmi',
+    name: 'Zafar Azmi',
+    email: 'zafar.azmi@guest.local',
+    phone: '9118306117',
+    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
+    status: 'active',
+    createdAt: '2026-11-08T00:00:00Z',
   },
   {
     id: 'mem_1',
@@ -135,24 +342,6 @@ const APPROVED_MEMBERS: ApprovedMember[] = [
     permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
     status: 'active',
     createdAt: '2026-10-17T09:15:00Z',
-  },
-  {
-    id: 'mem_4',
-    name: 'Zeeshan Ali',
-    email: 'zeeshan.ali@example.com',
-    phone: '9876543213',
-    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
-    status: 'active',
-    createdAt: '2026-10-18T14:20:00Z',
-  },
-  {
-    id: 'mem_5',
-    name: 'Maryam Siddiqui',
-    email: 'maryam.s@example.com',
-    phone: '9876543214',
-    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
-    status: 'active',
-    createdAt: '2026-10-19T16:45:00Z',
   },
 ];
 
@@ -376,6 +565,14 @@ function normalizePhone(phone: string): string {
 function normalizeEmail(email: string): string {
   return (email || '').trim().toLowerCase();
 }
+function cleanNameTokens(str: string): string {
+  return (str || '')
+    .toLowerCase()
+    .replace(/\b(mohammad|mohammed|muhammad|md\.?|mohd\.?)\b/g, 'mohd')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 /**
  * Case-insensitive, whitespace-forgiving, token-aware name matching.
@@ -385,15 +582,15 @@ function normalizeEmail(email: string): string {
 function isNameMatch(savedName: string, inputName: string): boolean {
   if (!savedName || !inputName) return false;
 
-  const s1 = savedName.toLowerCase().replace(/\s+/g, ' ').trim();
-  const s2 = inputName.toLowerCase().replace(/\s+/g, ' ').trim();
+  const s1 = cleanNameTokens(savedName);
+  const s2 = cleanNameTokens(inputName);
 
   // 1. Exact match (case-insensitive)
   if (s1 === s2) return true;
 
-  // 2. Ignore all punctuation/symbols
-  const compact1 = s1.replace(/[^a-z0-9]/g, '');
-  const compact2 = s2.replace(/[^a-z0-9]/g, '');
+  // 2. Ignore all punctuation/whitespace
+  const compact1 = s1.replace(/\s+/g, '');
+  const compact2 = s2.replace(/\s+/g, '');
   if (compact1 && compact1 === compact2) return true;
 
   // 3. Word token matching
