@@ -261,6 +261,60 @@
           </a>
         </div>
       </div>
+  </section>
+
+  <!-- Section: Wedding Highlight Reel Video (Placed directly above folders) -->
+  <section class="wedding-video-showcase-section" id="wedding-film">
+    <div class="container">
+      <!-- Section Divider -->
+      <div class="video-section-divider reveal-fade-up">
+        <div class="video-section-divider-line"></div>
+        <h2 class="video-section-title">Special Wedding Moments</h2>
+        <div class="video-section-divider-line"></div>
+      </div>
+
+      <!-- Video Player Card Container -->
+      <div class="wedding-video-container reveal-fade-up">
+        <div class="wedding-video-frame">
+          <video
+            id="homeWeddingVideo"
+            class="home-wedding-video"
+            src="https://github.com/mrsalman7307-sudo/Wedding-photo/raw/refs/heads/main/VID-20261108-WA0004.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            controls
+          >
+            Your browser does not support HTML5 video.
+          </video>
+
+          <!-- Floating Mute / Unmute Button -->
+          <div class="video-sound-overlay">
+            <button type="button" class="btn-sound-toggle" id="videoSoundToggleBtn" aria-label="Toggle Sound">
+              <svg class="sound-icon-muted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+              <svg class="sound-icon-unmuted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+              <span id="videoSoundLabel">Tap for Sound</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="wedding-video-footer">
+          <div class="video-tag">
+            <span class="pulse-dot"></span>
+            <span>Continuous Loop • Tap to Unmute Voice</span>
+          </div>
+          <p class="video-tagline">A glimpse into the heartfelt smiles, sacred vows & blessings</p>
+        </div>
+      </div>
     </div>
   </section>
 

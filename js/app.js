@@ -264,6 +264,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Initialize particles on canvas if present
   initGoldParticles('goldParticlesCanvas');
+
+  // 5. Home Wedding Video Loop & Sound Toggle Controls
+  const homeVideo = document.getElementById('homeWeddingVideo');
+  const soundBtn = document.getElementById('videoSoundToggleBtn');
+  if (homeVideo && soundBtn) {
+    const mutedIcon = soundBtn.querySelector('.sound-icon-muted');
+    const unmutedIcon = soundBtn.querySelector('.sound-icon-unmuted');
+    const label = document.getElementById('videoSoundLabel');
+
+    const updateSoundUI = () => {
+      if (homeVideo.muted || homeVideo.volume === 0) {
+        if (mutedIcon) mutedIcon.style.display = 'block';
+        if (unmutedIcon) unmutedIcon.style.display = 'none';
+        if (label) label.textContent = 'Tap for Sound';
+        soundBtn.setAttribute('aria-label', 'Unmute audio');
+      } else {
+        if (mutedIcon) mutedIcon.style.display = 'none';
+        if (unmutedIcon) unmutedIcon.style.display = 'block';
+        if (label) label.textContent = 'Mute Audio';
+        soundBtn.setAttribute('aria-label', 'Mute audio');
+      }
+    };
+
+    // Toggle Mute / Unmute on click
+    soundBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      homeVideo.muted = !homeVideo.muted;
+      updateSoundUI();
+      if (!homeVideo.muted) {
+        homeVideo.play().catch(() => {});
+      }
+    });
+
+    // Sync UI with native volume / mute controls
+    homeVideo.addEventListener('volumechange', updateSoundUI);
+
+    // Guarantee seamless loop replay when video ends
+    homeVideo.addEventListener('ended', () => {
+      homeVideo.currentTime = 0;
+      homeVideo.play().catch(() => {});
+    });
+
+    // Touch/click start for mobile autoplay policy if restricted
+    const startInlinePlay = () => {
+      if (homeVideo.paused) {
+        homeVideo.play().catch(() => {});
+      }
+    };
+    document.addEventListener('touchstart', startInlinePlay, { once: true, passive: true });
+    document.addEventListener('click', startInlinePlay, { once: true, passive: true });
+  }
 });
 
 // Select folder and begin verification flow

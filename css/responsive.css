@@ -149,6 +149,44 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
+  /* Wedding Video Showcase on Mobile */
+  .wedding-video-showcase-section {
+    padding: 1rem 0 2rem 0;
+  }
+
+  .video-section-divider {
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .video-section-title {
+    font-size: 1.35rem;
+  }
+
+  .wedding-video-container {
+    padding: 0.5rem;
+    border-radius: 18px;
+  }
+
+  .wedding-video-frame {
+    border-radius: 14px;
+  }
+
+  .home-wedding-video {
+    max-height: 400px;
+    border-radius: 14px;
+  }
+
+  .video-sound-overlay {
+    top: 10px;
+    right: 10px;
+  }
+
+  .btn-sound-toggle {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+  }
   
   .admin-layout {
     flex-direction: column;
