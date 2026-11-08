@@ -105,13 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const rawName = nameInput.value.trim();
       const rawEmail = emailInput ? emailInput.value.trim().toLowerCase() : '';
-      let rawPhone = phoneInput.value.replace(/[\s\-\+\(\)]/g, '');
-
-      // Normalize phone
-      if (rawPhone.length === 12 && rawPhone.startsWith('91')) {
-        rawPhone = rawPhone.substring(2);
-      } else if (rawPhone.length === 11 && rawPhone.startsWith('0')) {
-        rawPhone = rawPhone.substring(1);
+      let rawPhone = phoneInput.value.replace(/\D/g, '');
+      if (rawPhone.length >= 10) {
+        rawPhone = rawPhone.slice(-10);
       }
 
       // Validations

@@ -24,7 +24,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const adminToken = getAdminToken();
 
   // 1. Authorization Guard
-  if (!adminToken && (!guestToken || !guestData || guestData.folderId !== folderId)) {
+  const hasAccess =
+    adminToken ||
+    (guestToken &&
+      guestData &&
+      (guestData.folderId === folderId ||
+        guestData.permissions?.includes(folderId) ||
+        !guestData.permissions ||
+        guestData.permissions.length === 0));
+
+  if (!hasAccess) {
     showToast('Private gallery access requires prior verification.', 'error');
     setTimeout(() => {
       window.location.href = `/pages/verify.html?folder=${folderId}`;

@@ -24,7 +24,7 @@ export function initAdminLogin() {
       if (alertBox) alertBox.style.display = 'none';
 
       const email = emailInput.value.trim();
-      const password = passwordInput.value;
+      const password = passwordInput.value.trim();
 
       if (!email || !password) {
         if (alertBox) {
