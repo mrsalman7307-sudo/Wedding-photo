@@ -1128,3 +1128,63 @@ h1, h2, h3, h4, h5, h6 {
     display: inline-flex;
   }
 }
+
+/* -------------------------------------------------------
+   CREATOR CREDIT: CREATED BY SALMAN
+   ------------------------------------------------------- */
+.footer-creator-credit {
+  margin: 1.25rem 0 0.85rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.creator-showcase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(197, 160, 89, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.6rem 1.4rem;
+  border-radius: 50px;
+  color: #FAF7F2;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.creator-showcase-badge:hover {
+  background: rgba(197, 160, 89, 0.2);
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.3);
+}
+
+.creator-sparkle-icon {
+  color: var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseGold 2s infinite ease-in-out;
+}
+
+@keyframes pulseGold {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.creator-text {
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+  color: #FAF7F2;
+}
+
+.creator-name {
+  color: #F7DE94;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}

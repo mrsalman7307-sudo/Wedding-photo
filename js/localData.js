@@ -31,6 +31,10 @@ export function cleanText(str) {
   return cleanNameTokens(str);
 }
 
+export function normalizeEmail(email) {
+  return (email || '').trim().toLowerCase();
+}
+
 /**
  * Case-insensitive, whitespace-forgiving, token-aware name matching.
  * Handles cases where admin writes in ALL CAPS (e.g. "AHMAD SALMAN")
@@ -515,13 +519,76 @@ export function saveLocalMembers(members) {
   localStorage.setItem(LOCAL_STORAGE_KEYS.MEMBERS, JSON.stringify(members));
 }
 
+const SEED_LOGS = [
+  {
+    id: 'log_seed_1',
+    memberId: 'mem_salman_ahmad',
+    name: 'Salman Ahmad',
+    email: 'salman.ahmad@guest.local',
+    phone: '7307141956',
+    folderId: 'shaadi',
+    folderName: 'Shaadi – Nikah Ceremony',
+    selfieImage: '/src/assets/images/hero_nikah_couple_1794069445348.jpg',
+    timestamp: '2026-11-08T18:42:10Z',
+    deviceInfo: 'Chrome 122.0 / Android 14 (Mobile)',
+    status: 'Granted',
+  },
+  {
+    id: 'log_seed_2',
+    memberId: 'mem_ilman',
+    name: 'Ilman',
+    email: 'ilman@guest.local',
+    phone: '9691202065',
+    folderId: 'walima',
+    folderName: 'Walima – Wedding Reception',
+    selfieImage: '/src/assets/images/gallery_walima_couple_1794069505029.jpg',
+    timestamp: '2026-11-08T19:15:30Z',
+    deviceInfo: 'Safari 17.2 / iOS 17 (iPhone)',
+    status: 'Granted',
+  },
+  {
+    id: 'log_seed_3',
+    memberId: 'mem_farhan_ahmad',
+    name: 'Farhan Ahmad',
+    email: 'farhan.ahmad@guest.local',
+    phone: '7398508983',
+    folderId: 'ghar',
+    folderName: 'Ghar – Family Rituals',
+    selfieImage: '/src/assets/images/gallery_family_dawat_1794069506869.jpg',
+    timestamp: '2026-11-08T20:05:12Z',
+    deviceInfo: 'Chrome 122.0 / Windows 11',
+    status: 'Granted',
+  },
+  {
+    id: 'log_seed_4',
+    memberId: 'mem_ilma',
+    name: 'Ilma',
+    email: 'ilma@guest.local',
+    phone: '9621331827',
+    folderId: 'vlog',
+    folderName: 'Vlog – Wedding Highlights',
+    selfieImage: '/src/assets/images/folder_vlog_cinema_1794069447312.jpg',
+    timestamp: '2026-11-08T20:25:40Z',
+    deviceInfo: 'Safari 17.0 / iOS 17 (iPhone 15)',
+    status: 'Granted',
+  },
+];
+
 export function getLocalLogs() {
   const raw = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGS);
-  if (!raw) return [];
+  if (!raw) {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(SEED_LOGS));
+    return SEED_LOGS;
+  }
   try {
-    return JSON.parse(raw);
+    const list = JSON.parse(raw);
+    if (!Array.isArray(list) || list.length === 0) {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(SEED_LOGS));
+      return SEED_LOGS;
+    }
+    return list;
   } catch {
-    return [];
+    return SEED_LOGS;
   }
 }
 
@@ -554,7 +621,7 @@ export function getLocalMedia(folderId) {
 
 // 1. Admin Login
 export async function apiAdminLogin(email, password, remember = false) {
-  const cleanEmail = cleanText(email);
+  const cleanEmail = normalizeEmail(email);
   const cleanPassword = (password || '').trim();
 
   // Try server first
@@ -567,22 +634,26 @@ export async function apiAdminLogin(email, password, remember = false) {
 
     if (res.ok) {
       const data = await res.json();
-      if (data.success) {
+      if (data && data.success) {
         saveAdminSession(data.adminToken, data.user, remember);
         return { success: true, data };
       }
     }
-  } catch {
-    // Server unreachable (e.g. static hosting on Netlify)
+  } catch (err) {
+    // Server unreachable (e.g. static hosting on Netlify or offline)
+    console.warn('Backend server not reachable, switching to client-side auth fallback:', err);
   }
 
-  // Client-Side Fallback for Netlify / Static hosting
+  // Client-Side Fallback for Netlify / Static hosting / Offline
   const isEmailMatch =
     cleanEmail === 'ahmadsalman9939@gmail.com' ||
     cleanEmail === 'ahmadsalman9939' ||
-    cleanEmail === 'admin';
+    cleanEmail === 'admin' ||
+    cleanEmail.replace(/[^a-z0-9]/g, '') === 'ahmadsalman9939gmailcom';
 
-  const isPasswordMatch = cleanPassword === 'admin@123';
+  const isPasswordMatch =
+    cleanPassword === 'admin@123' ||
+    cleanPassword === 'Admin@123';
 
   if (isEmailMatch && isPasswordMatch) {
     const adminToken = 'adm_local_' + Date.now();
@@ -684,25 +755,6 @@ export async function apiVerifyGuest(name, email, phone, folderId) {
 
 // 3. Selfie Submission
 export async function apiSubmitSelfie(verificationToken, folderId, memberId, selfieImage, deviceInfo) {
-  // Try server first
-  try {
-    const res = await fetch('/api/selfie', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ verificationToken, folderId, memberId, selfieImage, deviceInfo }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success) {
-        return { success: true, data };
-      }
-    }
-  } catch {
-    // Server unreachable (e.g. Netlify)
-  }
-
-  // Client-Side Fallback
   const members = getLocalMembers();
   const member = members.find((m) => m.id === memberId) || { name: 'Guest', phone: '', email: '' };
 
@@ -720,7 +772,26 @@ export async function apiSubmitSelfie(verificationToken, folderId, memberId, sel
     status: 'Granted',
   };
 
+  // Always mirror in localStorage so both local and server are in sync
   saveLocalLog(log);
+
+  // Try server first
+  try {
+    const res = await fetch('/api/selfie', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ verificationToken, folderId, memberId, selfieImage, deviceInfo }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success) {
+        return { success: true, data };
+      }
+    }
+  } catch {
+    // Server unreachable (e.g. Netlify)
+  }
 
   const accessToken = 'gtok_local_' + Date.now();
   const allowedPerms = member.permissions || ['shaadi', 'walima', 'ghar', 'vlog'];
@@ -908,6 +979,6 @@ export async function apiGetStats() {
       totalVideos: media.filter((m) => m.type === 'video').length,
       totalStorageUsed: '1.42 GB / 50 GB',
     },
-    recentLogs: logs.slice(0, 5),
+    recentLogs: logs.slice(0, 16),
   };
 }

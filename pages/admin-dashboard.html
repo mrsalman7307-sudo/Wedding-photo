@@ -71,14 +71,11 @@
         </a>
       </nav>
 
-      <div class="admin-sidebar-footer">
-        <a href="/" target="_blank" style="font-size: 0.8rem; color: var(--color-gold); text-decoration: none; display: flex; align-items: center; gap: 0.4rem;">
-          <span>View Live Site</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-        </a>
-        <button onclick="window.logoutAdmin()" style="background: none; border: none; font-size: 0.8rem; color: #FCA5A5; cursor: pointer;">
-          Logout
-        </button>
+        <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+          <div style="font-size: 0.78rem; color: var(--color-gold); font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+            <span>Created by <strong>Salman</strong></span>
+          </div>
+        </div>
       </div>
     </aside>
 
@@ -171,12 +168,34 @@
           </div>
         </div>
 
-        <!-- Recent Selfie Access Table -->
+        <!-- 1. Dedicated Bada Selfie View: Verified Guest Selfie Gallery -->
+        <div class="selfie-bada-section">
+          <div class="table-toolbar" style="margin-bottom: 0.75rem;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <h3 style="font-size: 1.25rem; color: var(--color-ivory);">📸 Verified Guest Selfies (Bada Photo View)</h3>
+                <span class="status-badge active" style="font-size: 0.75rem;">Live Audit</span>
+              </div>
+              <p style="font-size: 0.825rem; color: var(--color-text-muted);">
+                Guests ki li gayi badi photos — Click karke full screen bada dekhein ya download karein
+              </p>
+            </div>
+            <a href="/pages/access-logs.html" class="btn-outline-gold" style="font-size: 0.825rem; padding: 0.45rem 0.9rem;">
+              All Selfies Log &rarr;
+            </a>
+          </div>
+
+          <div id="adminSelfieCardsGrid" class="selfie-bada-grid">
+            <!-- Populated with Large Photo Cards via JS -->
+          </div>
+        </div>
+
+        <!-- 2. Detailed Access Table View -->
         <div class="data-table-container">
           <div class="table-toolbar">
             <div>
-              <h3 style="font-size: 1.15rem; color: var(--color-ivory);">Recent Verified Guest Access</h3>
-              <p style="font-size: 0.8rem; color: var(--color-text-muted);">Audited front-camera selfies and timestamps</p>
+              <h3 style="font-size: 1.15rem; color: var(--color-ivory);">Recent Verified Guest Access Records</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted);">Timestamped audit log with front-camera security capture</p>
             </div>
             <a href="/pages/access-logs.html" class="btn-outline-gold" style="font-size: 0.825rem; padding: 0.45rem 0.9rem;">
               View Full Audit Log &rarr;
@@ -186,11 +205,13 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Selfie</th>
-                <th>Guest</th>
-                <th>Folder</th>
+                <th>Selfie Photo</th>
+                <th>Guest Details</th>
+                <th>Mobile Number</th>
+                <th>Folder Accessed</th>
                 <th>Access Time</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="adminRecentLogsBody">
@@ -198,29 +219,53 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Created by Salman Footer Note -->
+        <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+          <div class="creator-showcase-badge">
+            <div class="creator-sparkle-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <span class="creator-text">Crafted &amp; Created with Love by <strong class="creator-name">Salman</strong></span>
+          </div>
+        </div>
       </main>
     </div>
   </div>
 
-  <!-- Fullscreen Selfie Modal -->
+  <!-- Fullscreen Bada Selfie Inspection Modal -->
   <div id="selfiePreviewModal" class="modal-overlay">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-large">
       <div class="modal-header">
         <div>
-          <h4 id="selfieModalName" style="font-size: 1.1rem; color: var(--color-ivory);">Guest Selfie</h4>
-          <span id="selfieModalMeta" style="font-size: 0.75rem; color: var(--color-gold);"></span>
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <h4 id="selfieModalName" style="font-size: 1.25rem; color: var(--color-ivory); font-weight: 700;">Guest Selfie</h4>
+            <span class="status-badge active">Verified</span>
+          </div>
+          <span id="selfieModalMeta" style="font-size: 0.8rem; color: var(--color-gold);"></span>
         </div>
-        <button class="close-modal-btn" onclick="window.closeModal('selfiePreviewModal')">&times;</button>
+        <button class="close-modal-btn" onclick="window.closeModal('selfiePreviewModal')" aria-label="Close Modal">&times;</button>
       </div>
-      <div class="modal-body" style="text-align: center;">
+      <div class="modal-body" style="text-align: center; padding: 1.5rem;">
         <img 
           id="selfieModalImage" 
           src="" 
-          alt="Selfie" 
-          style="width: 100%; max-height: 380px; object-fit: contain; border-radius: var(--radius-sm); border: 2px solid var(--color-gold);" 
+          alt="Guest Selfie Full Size" 
+          class="modal-selfie-large-img" 
         />
+        <div id="selfieModalDetails" style="margin-top: 1rem;"></div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" id="selfieModalDownloadBtn" class="btn-gold" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Download Selfie</span>
+        </button>
         <button class="btn-outline-gold" onclick="window.closeModal('selfiePreviewModal')">Close</button>
       </div>
     </div>

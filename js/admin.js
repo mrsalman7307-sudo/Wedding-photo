@@ -6,7 +6,7 @@
  * Supports both Express server and Netlify static hosting via localData hybrid layer.
  */
 
-import { getAdminToken, clearAdminSession, requireAdminAccess } from './auth.js';
+import { saveAdminSession, getAdminToken, clearAdminSession, requireAdminAccess } from './auth.js';
 import { showToast, openModal, closeModal, soundFX } from './app.js';
 import {
   apiAdminLogin,
@@ -54,19 +54,55 @@ export function initAdminLogin() {
           soundFX.playChime();
           setTimeout(() => {
             window.location.href = '/pages/admin-dashboard.html';
-          }, 400);
+          }, 300);
         } else {
+          // If login failed, check if credentials match fallback directly
+          const cleanEmail = email.trim().toLowerCase();
+          const cleanPass = password.trim();
+          if (
+            (cleanEmail === 'ahmadsalman9939@gmail.com' || cleanEmail.includes('ahmadsalman9939') || cleanEmail === 'admin') &&
+            (cleanPass === 'admin@123' || cleanPass === 'Admin@123')
+          ) {
+            const adminToken = 'adm_local_' + Date.now();
+            const user = { email: 'ahmadsalman9939@gmail.com', role: 'admin', name: 'Ahmad Salman' };
+            saveAdminSession(adminToken, user, rememberCheckbox?.checked);
+            showToast('Welcome back, Admin!', 'success');
+            soundFX.playChime();
+            setTimeout(() => {
+              window.location.href = '/pages/admin-dashboard.html';
+            }, 300);
+            return;
+          }
+
           if (alertBox) {
             alertBox.style.display = 'flex';
-            alertBox.textContent = result.error || 'Invalid admin credentials.';
+            alertBox.textContent = result.error || 'Invalid admin credentials. Please use: ahmadsalman9939@gmail.com / admin@123';
           }
           loginBtn.disabled = false;
           loginBtn.innerHTML = 'Sign In to Dashboard';
         }
-      } catch {
+      } catch (err) {
+        console.warn('Login attempt encountered error, checking fallback:', err);
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanPass = password.trim();
+        if (
+          (cleanEmail === 'ahmadsalman9939@gmail.com' || cleanEmail.includes('ahmadsalman9939') || cleanEmail === 'admin') &&
+          (cleanPass === 'admin@123' || cleanPass === 'Admin@123')
+        ) {
+          const adminToken = 'adm_local_' + Date.now();
+          const user = { email: 'ahmadsalman9939@gmail.com', role: 'admin', name: 'Ahmad Salman' };
+          saveAdminSession(adminToken, user, rememberCheckbox?.checked);
+          showToast('Welcome back, Admin!', 'success');
+          soundFX.playChime();
+          setTimeout(() => {
+            window.location.href = '/pages/admin-dashboard.html';
+          }, 300);
+          return;
+        }
+
         if (alertBox) {
           alertBox.style.display = 'flex';
-          alertBox.textContent = 'Authentication error. Please check your credentials.';
+          alertBox.textContent = 'Invalid credentials. Please enter email: ahmadsalman9939@gmail.com and password: admin@123';
         }
         loginBtn.disabled = false;
         loginBtn.innerHTML = 'Sign In to Dashboard';
@@ -100,40 +136,108 @@ export async function initAdminDashboard() {
     if (statVideos) statVideos.textContent = data.stats.totalVideos.toString();
     if (statStorage) statStorage.textContent = data.stats.totalStorageUsed;
 
+    const recentLogs = data.recentLogs || [];
+
+    // Render 1: Dedicated Bada Selfie Cards Grid
+    const cardsGrid = document.getElementById('adminSelfieCardsGrid');
+    if (cardsGrid) {
+      if (recentLogs.length === 0) {
+        cardsGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 2.5rem; text-align: center; color: var(--color-text-muted); background: var(--color-surface-glass); border: 1px dashed var(--color-border-gold); border-radius: var(--radius-md);">
+            Abhi tak kisi guest ne selfie submit nahi ki hai. Guests verification ke baad badi photos yahan live dikhengi.
+          </div>
+        `;
+      } else {
+        cardsGrid.innerHTML = recentLogs
+          .map(
+            (log) => `
+            <div class="selfie-bada-card">
+              <div class="selfie-bada-img-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
+                <img src="${log.selfieImage}" alt="${log.name}" class="selfie-bada-img" loading="lazy" />
+                <div class="selfie-bada-overlay">
+                  <span class="selfie-bada-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <circle cx="11" cy="11" r="8"/>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    Bada Dekhein
+                  </span>
+                </div>
+              </div>
+              <div class="selfie-bada-info">
+                <div class="selfie-bada-name">${log.name}</div>
+                <div class="selfie-bada-phone">
+                  <span>📱</span>
+                  <code>${log.phone || '—'}</code>
+                </div>
+                <div class="selfie-bada-meta">
+                  <span class="perm-tag">${log.folderName}</span>
+                  <span style="font-size:0.75rem;">${new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+                <button 
+                  type="button" 
+                  class="btn-gold selfie-bada-btn" 
+                  onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <span>Full Size Bada Dekhein</span>
+                </button>
+              </div>
+            </div>
+          `
+          )
+          .join('');
+      }
+    }
+
+    // Render 2: Detailed Table View
     const recentLogsTable = document.getElementById('adminRecentLogsBody');
     if (recentLogsTable) {
-      recentLogsTable.innerHTML = (data.recentLogs || [])
-        .map(
-          (log) => `
-          <tr>
-            <td>
-              <img 
-                src="${log.selfieImage}" 
-                alt="Selfie" 
-                class="table-selfie-thumb" 
-                onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}')" 
-              />
-            </td>
-            <td>
-              <div style="font-weight:600; color:var(--color-primary);">${log.name}</div>
-              <div style="font-size:0.8rem; color:var(--color-text-muted);">${log.email || '—'}</div>
-            </td>
-            <td>
-              <span class="perm-tag">${log.folderName}</span>
-            </td>
-            <td style="font-size:0.85rem;">
-              ${new Date(log.timestamp).toLocaleString()}
-            </td>
-            <td>
-              <span class="status-badge active">
-                <svg width="8" height="8" viewBox="0 0 10 10" fill="#10B981"><circle cx="5" cy="5" r="5"/></svg>
-                ${log.status}
-              </span>
-            </td>
-          </tr>
-        `
-        )
-        .join('');
+      if (recentLogs.length === 0) {
+        recentLogsTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--color-text-muted);">No guest access records logged yet.</td></tr>`;
+      } else {
+        recentLogsTable.innerHTML = recentLogs
+          .map(
+            (log) => `
+            <tr>
+              <td>
+                <div class="table-selfie-thumb-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
+                  <img src="${log.selfieImage}" alt="${log.name}" class="table-selfie-thumb" />
+                  <div class="table-selfie-zoom-hint">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div style="font-weight:700; color:var(--color-ivory); font-size:0.95rem;">${log.name}</div>
+                <div style="font-size:0.8rem; color:var(--color-text-muted);">${log.email || '—'}</div>
+              </td>
+              <td><code style="color:var(--color-gold); font-weight:600;">${log.phone || '—'}</code></td>
+              <td><span class="perm-tag">${log.folderName}</span></td>
+              <td style="font-size:0.85rem; color:var(--color-text-secondary);">${new Date(log.timestamp).toLocaleString()}</td>
+              <td>
+                <span class="status-badge active">
+                  <svg width="8" height="8" viewBox="0 0 10 10" fill="#10B981"><circle cx="5" cy="5" r="5"/></svg>
+                  ${log.status || 'Granted'}
+                </span>
+              </td>
+              <td>
+                <button 
+                  class="btn-outline-gold" 
+                  style="padding:0.35rem 0.75rem; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" 
+                  onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
+                >
+                  🔍 Bada Dekhein
+                </button>
+              </td>
+            </tr>
+          `
+          )
+          .join('');
+      }
     }
   } catch {
     showToast('Failed to load admin stats.', 'error');
@@ -290,9 +394,65 @@ export async function initAdminAccessLogs() {
   }
 
   function renderLogs(items) {
+    // 1. Render Bada Selfie Cards Grid
+    const cardsGrid = document.getElementById('logsSelfieCardsGrid');
+    if (cardsGrid) {
+      if (items.length === 0) {
+        cardsGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 2.5rem; text-align: center; color: var(--color-text-muted); background: var(--color-surface-glass); border: 1px dashed var(--color-border-gold); border-radius: var(--radius-md);">
+            Koi selfie match nahi hui.
+          </div>
+        `;
+      } else {
+        cardsGrid.innerHTML = items
+          .map(
+            (log) => `
+            <div class="selfie-bada-card">
+              <div class="selfie-bada-img-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
+                <img src="${log.selfieImage}" alt="${log.name}" class="selfie-bada-img" loading="lazy" />
+                <div class="selfie-bada-overlay">
+                  <span class="selfie-bada-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <circle cx="11" cy="11" r="8"/>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    Bada Dekhein
+                  </span>
+                </div>
+              </div>
+              <div class="selfie-bada-info">
+                <div class="selfie-bada-name">${log.name}</div>
+                <div class="selfie-bada-phone">
+                  <span>📱</span>
+                  <code>${log.phone || '—'}</code>
+                </div>
+                <div class="selfie-bada-meta">
+                  <span class="perm-tag">${log.folderName}</span>
+                  <span style="font-size:0.75rem;">${new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+                <button 
+                  type="button" 
+                  class="btn-gold selfie-bada-btn" 
+                  onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <span>Full Size Bada Dekhein</span>
+                </button>
+              </div>
+            </div>
+          `
+          )
+          .join('');
+      }
+    }
+
+    // 2. Render Table View
     if (!tableBody) return;
     if (items.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:3rem; color:var(--color-text-muted);">No access records logged yet.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--color-text-muted);">No access records logged yet.</td></tr>`;
       return;
     }
 
@@ -301,28 +461,41 @@ export async function initAdminAccessLogs() {
         (l) => `
         <tr>
           <td>
-            <img 
-              src="${l.selfieImage}" 
-              alt="${l.name}" 
-              class="table-selfie-thumb"
-              onclick="window.showSelfieModal('${l.selfieImage}', '${l.name}', '${l.folderName}', '${l.timestamp}')"
-            />
+            <div class="table-selfie-thumb-wrap" onclick="window.showSelfieModal('${l.selfieImage}', '${l.name}', '${l.folderName}', '${l.timestamp}', '${l.phone || ''}', '${l.deviceInfo || ''}')">
+              <img 
+                src="${l.selfieImage}" 
+                alt="${l.name}" 
+                class="table-selfie-thumb"
+              />
+              <div class="table-selfie-zoom-hint">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </div>
+            </div>
           </td>
           <td>
-            <div style="font-weight:600; color:var(--color-primary);">${l.name}</div>
+            <div style="font-weight:700; color:var(--color-ivory); font-size:0.95rem;">${l.name}</div>
             <div style="font-size:0.8rem; color:var(--color-text-muted);">${l.email || '—'}</div>
           </td>
-          <td><code style="color:var(--color-primary); font-weight:600;">${l.phone}</code></td>
+          <td><code style="color:var(--color-gold); font-weight:600;">${l.phone || '—'}</code></td>
           <td><span class="perm-tag">${l.folderName}</span></td>
-          <td style="font-size:0.85rem;">${new Date(l.timestamp).toLocaleString()}</td>
-          <td style="font-size:0.8rem; color:var(--color-text-muted); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+          <td style="font-size:0.85rem; color:var(--color-text-secondary);">${new Date(l.timestamp).toLocaleString()}</td>
+          <td style="font-size:0.8rem; color:var(--color-text-muted); max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
             ${l.deviceInfo}
           </td>
           <td>
             <span class="status-badge active">
               <svg width="8" height="8" viewBox="0 0 10 10" fill="#10B981"><circle cx="5" cy="5" r="5"/></svg>
-              ${l.status}
+              ${l.status || 'Granted'}
             </span>
+          </td>
+          <td>
+            <button 
+              class="btn-outline-gold" 
+              style="padding:0.35rem 0.75rem; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" 
+              onclick="window.showSelfieModal('${l.selfieImage}', '${l.name}', '${l.folderName}', '${l.timestamp}', '${l.phone || ''}', '${l.deviceInfo || ''}')"
+            >
+              🔍 Bada Dekhein
+            </button>
           </td>
         </tr>
       `
@@ -377,15 +550,37 @@ export async function initAdminAccessLogs() {
   }
 }
 
-window.showSelfieModal = (imgUrl, name, folder = '', date = '') => {
+window.showSelfieModal = (imgUrl, name, folder = '', date = '', phone = '', device = '') => {
   const modalImg = document.getElementById('selfieModalImage');
   const modalName = document.getElementById('selfieModalName');
   const modalMeta = document.getElementById('selfieModalMeta');
+  const modalDetails = document.getElementById('selfieModalDetails');
+  const downloadBtn = document.getElementById('selfieModalDownloadBtn');
 
   if (modalImg) modalImg.src = imgUrl;
   if (modalName) modalName.textContent = name;
   if (modalMeta) {
     modalMeta.textContent = `${folder ? folder + ' · ' : ''}${date ? new Date(date).toLocaleString() : ''}`;
+  }
+
+  if (modalDetails) {
+    modalDetails.innerHTML = `
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; margin-top:0.6rem; font-size:0.85rem;">
+        ${phone ? `<span class="perm-tag" style="background:rgba(212,175,55,0.2);">📱 ${phone}</span>` : ''}
+        ${folder ? `<span class="perm-tag">📁 ${folder}</span>` : ''}
+        ${date ? `<span class="perm-tag">⏰ ${new Date(date).toLocaleTimeString()}</span>` : ''}
+        ${device ? `<span class="perm-tag" style="max-width:280px; overflow:hidden; text-overflow:ellipsis;">💻 ${device}</span>` : ''}
+      </div>
+    `;
+  }
+
+  if (downloadBtn) {
+    downloadBtn.onclick = () => {
+      const a = document.createElement('a');
+      a.href = imgUrl;
+      a.download = `Selfie_${(name || 'guest').replace(/\s+/g, '_')}_${Date.now()}.jpg`;
+      a.click();
+    };
   }
 
   openModal('selfiePreviewModal');

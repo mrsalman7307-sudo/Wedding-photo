@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Selfie Access Audit Logs – Our Nikah Memories Admin</title>
-  <meta name="description" content="Audit log of guest selfie captures and gallery unlocks." />
+  <title>Selfie Audit Logs – Our Nikah Memories Admin</title>
+  <meta name="description" content="View all audited guest verification selfies and security timestamps." />
   
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/animations.css" />
@@ -27,28 +27,39 @@
 
       <nav class="admin-sidebar-nav">
         <a href="/pages/admin-dashboard.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
           <span>Dashboard</span>
         </a>
 
         <a href="/pages/members.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
           <span>Approved Members</span>
         </a>
 
         <a href="/pages/access-logs.html" class="admin-nav-item active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
           <span>Selfie Audit Logs</span>
         </a>
 
         <a href="/pages/media-manager.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2"/>
+          </svg>
           <span>Media Manager</span>
-        </a>
-
-        <a href="/pages/settings.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <span>Settings</span>
         </a>
       </nav>
 
@@ -60,36 +71,70 @@
         <button onclick="window.logoutAdmin()" style="background: none; border: none; font-size: 0.8rem; color: #FCA5A5; cursor: pointer;">
           Logout
         </button>
+        <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+          <div style="font-size: 0.78rem; color: var(--color-gold); font-weight: 600;">
+            Created by <strong>Salman</strong>
+          </div>
+        </div>
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <div class="admin-main-content">
       <header class="admin-topbar">
         <div>
-          <h2 style="font-size: 1.35rem; color: var(--color-ivory);">Selfie Access Audit Trail</h2>
-          <p style="font-size: 0.825rem; color: var(--color-text-muted);">Timestamped records of front-camera captures and user details</p>
+          <h2 style="font-size: 1.35rem; color: var(--color-ivory);">Guest Selfie Security Audit</h2>
+          <p style="font-size: 0.825rem; color: var(--color-text-muted);">
+            Sabhi guests ki li gayi badi photos aur security access logs
+          </p>
         </div>
 
-        <button id="exportLogsCsvBtn" class="btn-gold" style="padding: 0.55rem 1.15rem; font-size: 0.85rem;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          <span>Export Audit Log (CSV)</span>
-        </button>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button id="exportLogsCsvBtn" class="btn-outline-gold" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>Export CSV</span>
+          </button>
+        </div>
       </header>
 
       <main class="admin-body">
+        <!-- 1. Bada Selfie View: Visual Cards Grid -->
+        <div class="selfie-bada-section">
+          <div class="table-toolbar">
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <h3 style="font-size: 1.25rem; color: var(--color-ivory);">📸 Guest Selfies (Bada Photo View)</h3>
+                <span class="status-badge active" style="font-size: 0.75rem;">Verified Photos</span>
+              </div>
+              <p style="font-size: 0.825rem; color: var(--color-text-muted);">
+                Guests ki badi photos — Click karke full-screen dekhein ya save karein
+              </p>
+            </div>
+          </div>
+
+          <div id="logsSelfieCardsGrid" class="selfie-bada-grid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- 2. Detailed Table View with Search -->
         <div class="data-table-container">
           <div class="table-toolbar">
-            <div style="position: relative; flex-grow: 1; max-width: 360px;">
+            <div>
+              <h3 style="font-size: 1.15rem; color: var(--color-ivory);">Detailed Audit Table</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted);">Searchable chronological log of guest verifications</p>
+            </div>
+
+            <div class="table-search-wrap">
               <input 
                 type="text" 
                 id="logsSearchInput" 
                 class="table-search-input" 
-                placeholder="Search audit records by name, phone or folder..." 
+                placeholder="Search by name, phone, or folder..." 
               />
             </div>
           </div>
@@ -97,43 +142,68 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Captured Selfie</th>
-                <th>Guest Identity</th>
+                <th>Selfie Photo</th>
+                <th>Guest Details</th>
                 <th>Mobile Number</th>
-                <th>Accessed Folder</th>
-                <th>Timestamp</th>
-                <th>Device Signature</th>
+                <th>Folder Accessed</th>
+                <th>Access Time</th>
+                <th>Device</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="accessLogsTableBody">
-              <!-- Rendered via JS -->
+              <!-- Populated via JS -->
             </tbody>
           </table>
+        </div>
+
+        <!-- Created by Salman Footer Note -->
+        <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+          <div class="creator-showcase-badge">
+            <div class="creator-sparkle-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <span class="creator-text">Crafted &amp; Created with Love by <strong class="creator-name">Salman</strong></span>
+          </div>
         </div>
       </main>
     </div>
   </div>
 
-  <!-- Fullsize Selfie Preview Modal -->
+  <!-- Fullscreen Bada Selfie Inspection Modal -->
   <div id="selfiePreviewModal" class="modal-overlay">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-large">
       <div class="modal-header">
         <div>
-          <h4 id="selfieModalName" style="font-size: 1.1rem; color: var(--color-ivory);">Guest Selfie</h4>
-          <span id="selfieModalMeta" style="font-size: 0.75rem; color: var(--color-gold);"></span>
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <h4 id="selfieModalName" style="font-size: 1.25rem; color: var(--color-ivory); font-weight: 700;">Guest Selfie</h4>
+            <span class="status-badge active">Verified</span>
+          </div>
+          <span id="selfieModalMeta" style="font-size: 0.8rem; color: var(--color-gold);"></span>
         </div>
-        <button class="close-modal-btn" onclick="window.closeModal('selfiePreviewModal')">&times;</button>
+        <button class="close-modal-btn" onclick="window.closeModal('selfiePreviewModal')" aria-label="Close Modal">&times;</button>
       </div>
-      <div class="modal-body" style="text-align: center;">
+      <div class="modal-body" style="text-align: center; padding: 1.5rem;">
         <img 
           id="selfieModalImage" 
           src="" 
-          alt="Selfie" 
-          style="width: 100%; max-height: 420px; object-fit: contain; border-radius: var(--radius-sm); border: 2px solid var(--color-gold);" 
+          alt="Guest Selfie Full Size" 
+          class="modal-selfie-large-img" 
         />
+        <div id="selfieModalDetails" style="margin-top: 1rem;"></div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" id="selfieModalDownloadBtn" class="btn-gold" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Download Selfie</span>
+        </button>
         <button class="btn-outline-gold" onclick="window.closeModal('selfiePreviewModal')">Close</button>
       </div>
     </div>

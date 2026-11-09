@@ -900,7 +900,7 @@ app.get('/api/admin/stats', checkAdminAuth, (req: Request, res: Response) => {
       title: f.title,
       accessCount: ACCESS_LOGS.filter((l) => l.folderId === f.id).length,
     })),
-    recentLogs: ACCESS_LOGS.slice(0, 5),
+    recentLogs: ACCESS_LOGS.slice(0, 16),
   });
 });
 

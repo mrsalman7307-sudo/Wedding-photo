@@ -66,7 +66,7 @@
               type="email" 
               id="adminEmail" 
               class="form-input" 
-              placeholder="Enter your registered email" 
+              placeholder="ahmadsalman9939@gmail.com" 
               required 
               autocomplete="email"
             />
@@ -78,17 +78,25 @@
               type="password" 
               id="adminPassword" 
               class="form-input" 
-              placeholder="••••••••••••" 
+              placeholder="admin@123" 
               required 
               autocomplete="current-password"
             />
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.75rem;">
+          <div style="margin-top: 0.75rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; background: rgba(197, 160, 89, 0.1); border: 1px dashed rgba(197, 160, 89, 0.4); padding: 0.5rem 0.75rem; border-radius: 8px;">
+            <span style="color: var(--color-primary); font-weight: 500;">
+              🔑 <strong>Admin:</strong> ahmadsalman9939@gmail.com
+            </span>
+            <button type="button" id="quickFillBtn" style="background: none; border: none; color: var(--color-gold-script); text-decoration: underline; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Auto-fill</button>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--color-text-body); cursor: pointer;">
-              <input type="checkbox" id="rememberMe" style="accent-color: var(--color-primary);" />
+              <input type="checkbox" id="rememberMe" checked style="accent-color: var(--color-primary);" />
               <span>Remember me</span>
             </label>
+            <span style="font-size: 0.8rem; color: var(--color-gold-script);">Host Protected</span>
           </div>
 
           <button type="submit" id="adminLoginSubmitBtn" class="btn-gold" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
@@ -99,8 +107,18 @@
           </button>
         </form>
 
-        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(197, 160, 89, 0.2); text-align: center; font-size: 0.78rem; color: var(--color-text-muted);">
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(197, 160, 89, 0.2); text-align: center; font-size: 0.82rem; color: var(--color-text-muted);">
           Protected Host Authentication · Authorized Access Only
+        </div>
+
+        <!-- Created by Salman Credit -->
+        <div style="margin-top: 1.25rem; text-align: center;">
+          <div class="creator-showcase-badge" style="background: rgba(12, 56, 41, 0.08); border-color: rgba(197, 160, 89, 0.5); color: var(--color-primary);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#C5A059" stroke="#C5A059">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span style="font-size: 0.85rem; color: var(--color-primary);">Created with Love by <strong style="color: var(--color-gold-script); font-weight: 700;">Salman</strong></span>
+          </div>
         </div>
       </div>
     </div>
@@ -111,6 +129,13 @@
   <script type="module">
     import { initAdminLogin } from '/js/admin.js';
     initAdminLogin();
+
+    document.getElementById('quickFillBtn')?.addEventListener('click', () => {
+      const emailInput = document.getElementById('adminEmail');
+      const passInput = document.getElementById('adminPassword');
+      if (emailInput) emailInput.value = 'ahmadsalman9939@gmail.com';
+      if (passInput) passInput.value = 'admin@123';
+    });
   </script>
 </body>
 </html>

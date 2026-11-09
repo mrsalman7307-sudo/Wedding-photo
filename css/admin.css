@@ -273,19 +273,47 @@
   border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
-/* Selfie Thumbnail in Table */
-.table-selfie-thumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
+/* Selfie Thumbnail in Table - Prominent & Clickable */
+.table-selfie-thumb-wrap {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+  overflow: hidden;
   border: 2px solid var(--color-gold);
   cursor: pointer;
-  transition: transform var(--transition-fast);
+  background: #011A14;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-fast);
 }
 
-.table-selfie-thumb:hover {
-  transform: scale(1.15);
+.table-selfie-thumb-wrap:hover {
+  transform: scale(1.12);
+  border-color: var(--color-gold-bright);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.35);
+}
+
+.table-selfie-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.table-selfie-zoom-hint {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 56, 41, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: #FFFFFF;
+}
+
+.table-selfie-thumb-wrap:hover .table-selfie-zoom-hint {
+  opacity: 1;
 }
 
 /* Upload Dropzone */
@@ -387,4 +415,146 @@
 
 .close-modal-btn:hover {
   color: var(--color-gold-bright);
+}
+
+/* -------------------------------------------------------
+   BADA SELFIE VIEW - DEDICATED VISUAL CARDS GRID
+   ------------------------------------------------------- */
+.selfie-bada-section {
+  margin-bottom: 2.5rem;
+}
+
+.selfie-bada-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.selfie-bada-card {
+  background: var(--color-surface-glass);
+  border: 1.5px solid var(--color-border-gold);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-normal);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.selfie-bada-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-gold);
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25);
+}
+
+.selfie-bada-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background: #011A14;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.selfie-bada-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.selfie-bada-card:hover .selfie-bada-img {
+  transform: scale(1.06);
+}
+
+.selfie-bada-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 56, 41, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.selfie-bada-card:hover .selfie-bada-overlay {
+  opacity: 1;
+}
+
+.selfie-bada-badge {
+  background: rgba(12, 56, 41, 0.95);
+  color: var(--color-gold-bright);
+  border: 1px solid var(--color-gold);
+  padding: 0.45rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.selfie-bada-info {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.selfie-bada-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-ivory);
+  margin-bottom: 0.15rem;
+}
+
+.selfie-bada-phone {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+.selfie-bada-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.selfie-bada-btn {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+/* Enhanced Fullscreen Modal */
+.modal-dialog-large {
+  max-width: 680px;
+  width: 95%;
+}
+
+.modal-selfie-large-img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid var(--color-gold);
+  background: #011A14;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
