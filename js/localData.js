@@ -7,6 +7,24 @@
  */
 
 import { saveAdminSession, getAdminToken } from './auth.js';
+import { saveSelfieToFirestore, getSelfiesFromFirestore } from './firebase.js';
+
+export function mergeLogs(listA, listB) {
+  const map = new Map();
+  for (const log of listA || []) {
+    if (!log) continue;
+    const key = log.id || `${log.phone || ''}_${log.timestamp || ''}`;
+    if (key) map.set(key, log);
+  }
+  for (const log of listB || []) {
+    if (!log) continue;
+    const key = log.id || `${log.phone || ''}_${log.timestamp || ''}`;
+    if (key) map.set(key, log);
+  }
+  const merged = Array.from(map.values());
+  merged.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  return merged;
+}
 
 // Normalization Helpers
 export function normalizePhone(phone) {
@@ -775,6 +793,13 @@ export async function apiSubmitSelfie(verificationToken, folderId, memberId, sel
   // Always mirror in localStorage so both local and server are in sync
   saveLocalLog(log);
 
+  // Save directly to Firebase Cloud Firestore for real-time cross-device sync
+  try {
+    saveSelfieToFirestore(log).catch((err) => console.warn('Firestore async save error:', err));
+  } catch (fbErr) {
+    console.warn('Could not trigger Firestore save:', fbErr);
+  }
+
   // Try server first
   try {
     const res = await fetch('/api/selfie', {
@@ -936,49 +961,92 @@ export async function apiToggleMember(memberId) {
 
 export async function apiGetLogs() {
   const token = getAdminToken();
+  let serverLogs = null;
+
   try {
     const res = await fetch('/api/admin/logs', {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
       const data = await res.json();
-      if (data.success) return { success: true, logs: data.logs };
+      if (data && data.success && Array.isArray(data.logs)) {
+        serverLogs = data.logs;
+      }
     }
   } catch {
     // Fallback
   }
 
-  return { success: true, logs: getLocalLogs() };
+  // Fetch cross-device selfies from Firebase Cloud Firestore
+  let cloudLogs = [];
+  try {
+    cloudLogs = await getSelfiesFromFirestore();
+  } catch (err) {
+    console.warn('Could not fetch logs from Firestore:', err);
+  }
+
+  const localLogs = getLocalLogs();
+  const allLogs = mergeLogs(localLogs, mergeLogs(serverLogs || [], cloudLogs || []));
+
+  if (allLogs.length > 0) {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(allLogs));
+    return { success: true, logs: allLogs };
+  }
+
+  return { success: true, logs: localLogs };
 }
 
 export async function apiGetStats() {
   const token = getAdminToken();
+  let serverStats = null;
+  let serverLogs = [];
+
   try {
     const res = await fetch('/api/admin/stats', {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
       const data = await res.json();
-      if (data.success) return { success: true, stats: data.stats, recentLogs: data.recentLogs };
+      if (data && data.success) {
+        serverStats = data.stats;
+        serverLogs = data.recentLogs || [];
+      }
     }
   } catch {
     // Fallback
   }
 
+  // Fetch cross-device selfies from Firebase Cloud Firestore
+  let cloudLogs = [];
+  try {
+    cloudLogs = await getSelfiesFromFirestore();
+  } catch (err) {
+    console.warn('Could not fetch cloud logs for stats:', err);
+  }
+
+  const localLogs = getLocalLogs();
+  const allLogs = mergeLogs(localLogs, mergeLogs(serverLogs, cloudLogs));
+
+  if (allLogs.length > 0) {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(allLogs));
+  }
+
   const members = getLocalMembers();
-  const logs = getLocalLogs();
   const media = getLocalMedia();
+
+  const totalPhotos = media.filter((m) => m.type === 'photo').length;
+  const totalVideos = media.filter((m) => m.type === 'video').length;
 
   return {
     success: true,
     stats: {
-      totalMembers: members.length,
-      activeMembers: members.filter((m) => m.status === 'active').length,
-      totalAccessRecords: logs.length,
-      totalPhotos: media.filter((m) => m.type === 'photo').length,
-      totalVideos: media.filter((m) => m.type === 'video').length,
-      totalStorageUsed: '1.42 GB / 50 GB',
+      totalMembers: serverStats?.totalMembers || members.length,
+      activeMembers: serverStats?.activeMembers || members.filter((m) => m.status === 'active').length,
+      totalAccessRecords: allLogs.length,
+      totalPhotos: serverStats?.totalPhotos || totalPhotos,
+      totalVideos: serverStats?.totalVideos || totalVideos,
+      totalStorageUsed: serverStats?.totalStorageUsed || '1.42 GB / 50 GB',
     },
-    recentLogs: logs.slice(0, 16),
+    recentLogs: allLogs.slice(0, 24),
   };
 }

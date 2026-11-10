@@ -1,0 +1,121 @@
+{
+  "entities": {
+    "AccessLog": {
+      "title": "AccessLog",
+      "description": "Security audit record created when a wedding guest passes verification and captures a selfie.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique log record ID."
+        },
+        "memberId": {
+          "type": "string",
+          "description": "Associated member ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the guest."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the guest."
+        },
+        "phone": {
+          "type": "string",
+          "description": "10-digit mobile number."
+        },
+        "folderId": {
+          "type": "string",
+          "description": "Accessed album ID (shaadi, walima, ghar, vlog)."
+        },
+        "folderName": {
+          "type": "string",
+          "description": "Display name of the album."
+        },
+        "selfieImage": {
+          "type": "string",
+          "description": "Base64 data or image URL of the selfie."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of access."
+        },
+        "deviceInfo": {
+          "type": "string",
+          "description": "Client device and browser information."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Granted", "Denied"],
+          "description": "Verification status."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "folderId",
+        "selfieImage",
+        "timestamp",
+        "status"
+      ]
+    },
+    "ApprovedMember": {
+      "title": "ApprovedMember",
+      "description": "Pre-approved wedding guest contact with folder permissions.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique member identifier."
+        },
+        "name": {
+          "type": "string",
+          "description": "Guest full name."
+        },
+        "email": {
+          "type": "string",
+          "description": "Guest contact email."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Normalized 10-digit phone number."
+        },
+        "permissions": {
+          "type": "array",
+          "description": "List of accessible album folder IDs."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "disabled"],
+          "description": "Active or suspended status."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when member was registered."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "permissions",
+        "status",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/access_logs/{logId}": {
+      "schema": "AccessLog",
+      "description": "Guest access logs with verified selfies for admin audit."
+    },
+    "/approved_members/{memberId}": {
+      "schema": "ApprovedMember",
+      "description": "Approved wedding guest list for credential matching."
+    }
+  }
+}

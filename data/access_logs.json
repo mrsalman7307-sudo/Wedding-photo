@@ -1,0 +1,41 @@
+[
+  {
+    "id": "log_1794238611569_70ngk",
+    "memberId": "mem_farhan_ahmad",
+    "name": "Farhan Ahmad",
+    "email": "farhan.ahmad@guest.local",
+    "phone": "7398508983",
+    "folderId": "walima",
+    "folderName": "Walima – Wedding Reception",
+    "selfieImage": "/src/assets/images/gallery_walima_couple_1794069505029.jpg",
+    "timestamp": "2026-11-09T15:36:51.569Z",
+    "deviceInfo": "Farhan iPhone 15",
+    "status": "Granted"
+  },
+  {
+    "id": "log_seed_1",
+    "memberId": "mem_1",
+    "name": "Rahul Sharma",
+    "email": "rahul@example.com",
+    "phone": "9876543210",
+    "folderId": "shaadi",
+    "folderName": "Shaadi – Nikah Ceremony",
+    "selfieImage": "/src/assets/images/hero_nikah_couple_1794069445348.jpg",
+    "timestamp": "2026-11-06T18:42:10Z",
+    "deviceInfo": "Chrome 122.0 / macOS (1920x1080)",
+    "status": "Granted"
+  },
+  {
+    "id": "log_seed_2",
+    "memberId": "mem_3",
+    "name": "Fatima Zahra",
+    "email": "fatima.zahra@example.com",
+    "phone": "9876543212",
+    "folderId": "walima",
+    "folderName": "Walima – Wedding Reception",
+    "selfieImage": "/src/assets/images/gallery_walima_couple_1794069505029.jpg",
+    "timestamp": "2026-11-07T07:15:30Z",
+    "deviceInfo": "Safari 17.2 / iOS (iPhone 15 Pro)",
+    "status": "Granted"
+  }
+]

@@ -8,6 +8,7 @@
 
 import { saveAdminSession, getAdminToken, clearAdminSession, requireAdminAccess } from './auth.js';
 import { showToast, openModal, closeModal, soundFX } from './app.js';
+import { subscribeToSelfies } from './firebase.js';
 import {
   apiAdminLogin,
   apiGetStats,
@@ -138,106 +139,122 @@ export async function initAdminDashboard() {
 
     const recentLogs = data.recentLogs || [];
 
-    // Render 1: Dedicated Bada Selfie Cards Grid
-    const cardsGrid = document.getElementById('adminSelfieCardsGrid');
-    if (cardsGrid) {
-      if (recentLogs.length === 0) {
-        cardsGrid.innerHTML = `
-          <div style="grid-column: 1 / -1; padding: 2.5rem; text-align: center; color: var(--color-text-muted); background: var(--color-surface-glass); border: 1px dashed var(--color-border-gold); border-radius: var(--radius-md);">
-            Abhi tak kisi guest ne selfie submit nahi ki hai. Guests verification ke baad badi photos yahan live dikhengi.
-          </div>
-        `;
-      } else {
-        cardsGrid.innerHTML = recentLogs
-          .map(
-            (log) => `
-            <div class="selfie-bada-card">
-              <div class="selfie-bada-img-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
-                <img src="${log.selfieImage}" alt="${log.name}" class="selfie-bada-img" loading="lazy" />
-                <div class="selfie-bada-overlay">
-                  <span class="selfie-bada-badge">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    function renderDashboardRecentLogs(logs) {
+      // Render 1: Dedicated Bada Selfie Cards Grid
+      const cardsGrid = document.getElementById('adminSelfieCardsGrid');
+      if (cardsGrid) {
+        if (!logs || logs.length === 0) {
+          cardsGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; padding: 2.5rem; text-align: center; color: var(--color-text-muted); background: var(--color-surface-glass); border: 1px dashed var(--color-border-gold); border-radius: var(--radius-md);">
+              Abhi tak kisi guest ne selfie submit nahi ki hai. Guests verification ke baad badi photos yahan live dikhengi.
+            </div>
+          `;
+        } else {
+          cardsGrid.innerHTML = logs
+            .map(
+              (log) => `
+              <div class="selfie-bada-card">
+                <div class="selfie-bada-img-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
+                  <img src="${log.selfieImage}" alt="${log.name}" class="selfie-bada-img" loading="lazy" />
+                  <div class="selfie-bada-overlay">
+                    <span class="selfie-bada-badge">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                      </svg>
+                      Bada Dekhein
+                    </span>
+                  </div>
+                </div>
+                <div class="selfie-bada-info">
+                  <div class="selfie-bada-name">${log.name}</div>
+                  <div class="selfie-bada-phone">
+                    <span>📱</span>
+                    <code>${log.phone || '—'}</code>
+                  </div>
+                  <div class="selfie-bada-meta">
+                    <span class="perm-tag">${log.folderName}</span>
+                    <span style="font-size:0.75rem;">${new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                  <button 
+                    type="button" 
+                    class="btn-gold selfie-bada-btn" 
+                    onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="11" cy="11" r="8"/>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    Bada Dekhein
+                    <span>Full Size Bada Dekhein</span>
+                  </button>
+                </div>
+              </div>
+            `
+            )
+            .join('');
+        }
+      }
+
+      // Render 2: Detailed Table View
+      const recentLogsTable = document.getElementById('adminRecentLogsBody');
+      if (recentLogsTable) {
+        if (!logs || logs.length === 0) {
+          recentLogsTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--color-text-muted);">No guest access records logged yet.</td></tr>`;
+        } else {
+          recentLogsTable.innerHTML = logs
+            .map(
+              (log) => `
+              <tr>
+                <td>
+                  <div class="table-selfie-thumb-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
+                    <img src="${log.selfieImage}" alt="${log.name}" class="table-selfie-thumb" />
+                    <div class="table-selfie-zoom-hint">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div style="font-weight:700; color:var(--color-ivory); font-size:0.95rem;">${log.name}</div>
+                  <div style="font-size:0.8rem; color:var(--color-text-muted);">${log.email || '—'}</div>
+                </td>
+                <td><code style="color:var(--color-gold); font-weight:600;">${log.phone || '—'}</code></td>
+                <td><span class="perm-tag">${log.folderName}</span></td>
+                <td style="font-size:0.85rem; color:var(--color-text-secondary);">${new Date(log.timestamp).toLocaleString()}</td>
+                <td>
+                  <span class="status-badge active">
+                    <svg width="8" height="8" viewBox="0 0 10 10" fill="#10B981"><circle cx="5" cy="5" r="5"/></svg>
+                    ${log.status || 'Granted'}
                   </span>
-                </div>
-              </div>
-              <div class="selfie-bada-info">
-                <div class="selfie-bada-name">${log.name}</div>
-                <div class="selfie-bada-phone">
-                  <span>📱</span>
-                  <code>${log.phone || '—'}</code>
-                </div>
-                <div class="selfie-bada-meta">
-                  <span class="perm-tag">${log.folderName}</span>
-                  <span style="font-size:0.75rem;">${new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                </div>
-                <button 
-                  type="button" 
-                  class="btn-gold selfie-bada-btn" 
-                  onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                  </svg>
-                  <span>Full Size Bada Dekhein</span>
-                </button>
-              </div>
-            </div>
-          `
-          )
-          .join('');
+                </td>
+                <td>
+                  <button 
+                    class="btn-outline-gold" 
+                    style="padding:0.35rem 0.75rem; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" 
+                    onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
+                  >
+                    🔍 Bada Dekhein
+                  </button>
+                </td>
+              </tr>
+            `
+            )
+            .join('');
+        }
       }
     }
 
-    // Render 2: Detailed Table View
-    const recentLogsTable = document.getElementById('adminRecentLogsBody');
-    if (recentLogsTable) {
-      if (recentLogs.length === 0) {
-        recentLogsTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--color-text-muted);">No guest access records logged yet.</td></tr>`;
-      } else {
-        recentLogsTable.innerHTML = recentLogs
-          .map(
-            (log) => `
-            <tr>
-              <td>
-                <div class="table-selfie-thumb-wrap" onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')">
-                  <img src="${log.selfieImage}" alt="${log.name}" class="table-selfie-thumb" />
-                  <div class="table-selfie-zoom-hint">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div style="font-weight:700; color:var(--color-ivory); font-size:0.95rem;">${log.name}</div>
-                <div style="font-size:0.8rem; color:var(--color-text-muted);">${log.email || '—'}</div>
-              </td>
-              <td><code style="color:var(--color-gold); font-weight:600;">${log.phone || '—'}</code></td>
-              <td><span class="perm-tag">${log.folderName}</span></td>
-              <td style="font-size:0.85rem; color:var(--color-text-secondary);">${new Date(log.timestamp).toLocaleString()}</td>
-              <td>
-                <span class="status-badge active">
-                  <svg width="8" height="8" viewBox="0 0 10 10" fill="#10B981"><circle cx="5" cy="5" r="5"/></svg>
-                  ${log.status || 'Granted'}
-                </span>
-              </td>
-              <td>
-                <button 
-                  class="btn-outline-gold" 
-                  style="padding:0.35rem 0.75rem; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" 
-                  onclick="window.showSelfieModal('${log.selfieImage}', '${log.name}', '${log.folderName}', '${log.timestamp}', '${log.phone || ''}', '${log.deviceInfo || ''}')"
-                >
-                  🔍 Bada Dekhein
-                </button>
-              </td>
-            </tr>
-          `
-          )
-          .join('');
-      }
+    renderDashboardRecentLogs(recentLogs);
+
+    // Live cross-device real-time listener from Firebase Firestore
+    try {
+      subscribeToSelfies((liveLogs) => {
+        if (Array.isArray(liveLogs) && liveLogs.length > 0) {
+          if (statRecords) statRecords.textContent = liveLogs.length.toString();
+          renderDashboardRecentLogs(liveLogs.slice(0, 24));
+        }
+      });
+    } catch (subErr) {
+      console.warn('Real-time subscription warning:', subErr);
     }
   } catch {
     showToast('Failed to load admin stats.', 'error');
@@ -388,6 +405,17 @@ export async function initAdminAccessLogs() {
     if (data.success) {
       logsList = data.logs;
       renderLogs(logsList);
+    }
+
+    try {
+      subscribeToSelfies((liveLogs) => {
+        if (Array.isArray(liveLogs) && liveLogs.length > 0) {
+          logsList = liveLogs;
+          renderLogs(logsList);
+        }
+      });
+    } catch (subErr) {
+      console.warn('Real-time subscription warning in access logs:', subErr);
     }
   } catch {
     showToast('Failed to load access logs.', 'error');
