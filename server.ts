@@ -329,31 +329,13 @@ const APPROVED_MEMBERS: ApprovedMember[] = [
     createdAt: '2026-11-08T00:00:00Z',
   },
   {
-    id: 'mem_1',
-    name: 'Rahul Sharma',
-    email: 'rahul@example.com',
-    phone: '9876543210',
+    id: 'mem_kamran_azam',
+    name: 'Kamran Azam',
+    email: 'kamran.azam@guest.local',
+    phone: '7071992778',
     permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
     status: 'active',
-    createdAt: '2026-10-15T10:00:00Z',
-  },
-  {
-    id: 'mem_2',
-    name: 'Amit Khan',
-    email: 'amit@example.com',
-    phone: '9876543211',
-    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
-    status: 'active',
-    createdAt: '2026-10-16T11:30:00Z',
-  },
-  {
-    id: 'mem_3',
-    name: 'Fatima Zahra',
-    email: 'fatima.zahra@example.com',
-    phone: '9876543212',
-    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
-    status: 'active',
-    createdAt: '2026-10-17T09:15:00Z',
+    createdAt: '2026-11-10T00:00:00Z',
   },
 ];
 
@@ -513,6 +495,14 @@ const MEDIA_DATABASE: MediaItem[] = [
 const DATA_DIR = path.join(__dirname, 'data');
 const LOGS_FILE = path.join(DATA_DIR, 'access_logs.json');
 
+function isRealSelfieLog(log: AccessLog): boolean {
+  if (!log || !log.selfieImage) return false;
+  if (log.id && log.id.startsWith('log_seed_')) return false;
+  if (typeof log.selfieImage === 'string' && log.selfieImage.includes('/src/assets/images/')) return false;
+  if (log.name === 'Rahul Sharma' || log.name === 'Fatima Zahra' || log.name === 'Amit Khan') return false;
+  return true;
+}
+
 function loadPersistedLogs(): AccessLog[] {
   try {
     if (!fs.existsSync(DATA_DIR)) {
@@ -521,41 +511,14 @@ function loadPersistedLogs(): AccessLog[] {
     if (fs.existsSync(LOGS_FILE)) {
       const content = fs.readFileSync(LOGS_FILE, 'utf-8');
       const parsed = JSON.parse(content);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+      if (Array.isArray(parsed)) {
+        return parsed.filter(isRealSelfieLog);
       }
     }
   } catch (err) {
     console.warn('Could not read persisted logs:', err);
   }
-  return [
-    {
-      id: 'log_seed_1',
-      memberId: 'mem_1',
-      name: 'Rahul Sharma',
-      email: 'rahul@example.com',
-      phone: '9876543210',
-      folderId: 'shaadi',
-      folderName: 'Shaadi – Nikah Ceremony',
-      selfieImage: '/src/assets/images/hero_nikah_couple_1794069445348.jpg',
-      timestamp: '2026-11-06T18:42:10Z',
-      deviceInfo: 'Chrome 122.0 / macOS (1920x1080)',
-      status: 'Granted',
-    },
-    {
-      id: 'log_seed_2',
-      memberId: 'mem_3',
-      name: 'Fatima Zahra',
-      email: 'fatima.zahra@example.com',
-      phone: '9876543212',
-      folderId: 'walima',
-      folderName: 'Walima – Wedding Reception',
-      selfieImage: '/src/assets/images/gallery_walima_couple_1794069505029.jpg',
-      timestamp: '2026-11-07T07:15:30Z',
-      deviceInfo: 'Safari 17.2 / iOS (iPhone 15 Pro)',
-      status: 'Granted',
-    },
-  ];
+  return [];
 }
 
 export function savePersistedLogs(logs: AccessLog[]) {

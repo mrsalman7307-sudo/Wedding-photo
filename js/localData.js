@@ -9,15 +9,23 @@
 import { saveAdminSession, getAdminToken } from './auth.js';
 import { saveSelfieToFirestore, getSelfiesFromFirestore } from './firebase.js';
 
+export function isRealSelfie(log) {
+  if (!log || !log.selfieImage) return false;
+  if (log.id && String(log.id).startsWith('log_seed_')) return false;
+  if (typeof log.selfieImage === 'string' && log.selfieImage.includes('/src/assets/images/')) return false;
+  if (log.name === 'Rahul Sharma' || log.name === 'Fatima Zahra' || log.name === 'Amit Khan') return false;
+  return true;
+}
+
 export function mergeLogs(listA, listB) {
   const map = new Map();
   for (const log of listA || []) {
-    if (!log) continue;
+    if (!isRealSelfie(log)) continue;
     const key = log.id || `${log.phone || ''}_${log.timestamp || ''}`;
     if (key) map.set(key, log);
   }
   for (const log of listB || []) {
-    if (!log) continue;
+    if (!isRealSelfie(log)) continue;
     const key = log.id || `${log.phone || ''}_${log.timestamp || ''}`;
     if (key) map.set(key, log);
   }
@@ -315,31 +323,13 @@ const SEED_MEMBERS = [
     createdAt: '2026-11-08T00:00:00Z',
   },
   {
-    id: 'mem_1',
-    name: 'Rahul Sharma',
-    email: 'rahul@example.com',
-    phone: '9876543210',
+    id: 'mem_kamran_azam',
+    name: 'Kamran Azam',
+    email: 'kamran.azam@guest.local',
+    phone: '7071992778',
     permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
     status: 'active',
-    createdAt: '2026-10-15T10:00:00Z',
-  },
-  {
-    id: 'mem_2',
-    name: 'Amit Khan',
-    email: 'amit@example.com',
-    phone: '9876543211',
-    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
-    status: 'active',
-    createdAt: '2026-10-16T11:30:00Z',
-  },
-  {
-    id: 'mem_3',
-    name: 'Fatima Zahra',
-    email: 'fatima.zahra@example.com',
-    phone: '9876543212',
-    permissions: ['shaadi', 'walima', 'ghar', 'vlog'],
-    status: 'active',
-    createdAt: '2026-10-17T09:15:00Z',
+    createdAt: '2026-11-10T00:00:00Z',
   },
 ];
 
@@ -515,8 +505,12 @@ export function getLocalMembers() {
     }
   }
 
-  // Ensure all SEED_MEMBERS exist in list by phone match
-  let updated = false;
+  // Remove legacy dummy members if present in old localStorage
+  const beforeLen = list.length;
+  list = list.filter((m) => m.name !== 'Rahul Sharma' && m.name !== 'Fatima Zahra' && m.name !== 'Amit Khan');
+  if (list.length !== beforeLen) updated = true;
+
+  // Ensure all SEED_MEMBERS (including Kamran Azam) exist in list by phone match
   for (const seed of SEED_MEMBERS) {
     const seedPhone = normalizePhone(seed.phone);
     const exists = list.some((m) => normalizePhone(m.phone) === seedPhone);
@@ -537,76 +531,20 @@ export function saveLocalMembers(members) {
   localStorage.setItem(LOCAL_STORAGE_KEYS.MEMBERS, JSON.stringify(members));
 }
 
-const SEED_LOGS = [
-  {
-    id: 'log_seed_1',
-    memberId: 'mem_salman_ahmad',
-    name: 'Salman Ahmad',
-    email: 'salman.ahmad@guest.local',
-    phone: '7307141956',
-    folderId: 'shaadi',
-    folderName: 'Shaadi – Nikah Ceremony',
-    selfieImage: '/src/assets/images/hero_nikah_couple_1794069445348.jpg',
-    timestamp: '2026-11-08T18:42:10Z',
-    deviceInfo: 'Chrome 122.0 / Android 14 (Mobile)',
-    status: 'Granted',
-  },
-  {
-    id: 'log_seed_2',
-    memberId: 'mem_ilman',
-    name: 'Ilman',
-    email: 'ilman@guest.local',
-    phone: '9691202065',
-    folderId: 'walima',
-    folderName: 'Walima – Wedding Reception',
-    selfieImage: '/src/assets/images/gallery_walima_couple_1794069505029.jpg',
-    timestamp: '2026-11-08T19:15:30Z',
-    deviceInfo: 'Safari 17.2 / iOS 17 (iPhone)',
-    status: 'Granted',
-  },
-  {
-    id: 'log_seed_3',
-    memberId: 'mem_farhan_ahmad',
-    name: 'Farhan Ahmad',
-    email: 'farhan.ahmad@guest.local',
-    phone: '7398508983',
-    folderId: 'ghar',
-    folderName: 'Ghar – Family Rituals',
-    selfieImage: '/src/assets/images/gallery_family_dawat_1794069506869.jpg',
-    timestamp: '2026-11-08T20:05:12Z',
-    deviceInfo: 'Chrome 122.0 / Windows 11',
-    status: 'Granted',
-  },
-  {
-    id: 'log_seed_4',
-    memberId: 'mem_ilma',
-    name: 'Ilma',
-    email: 'ilma@guest.local',
-    phone: '9621331827',
-    folderId: 'vlog',
-    folderName: 'Vlog – Wedding Highlights',
-    selfieImage: '/src/assets/images/folder_vlog_cinema_1794069447312.jpg',
-    timestamp: '2026-11-08T20:25:40Z',
-    deviceInfo: 'Safari 17.0 / iOS 17 (iPhone 15)',
-    status: 'Granted',
-  },
-];
-
 export function getLocalLogs() {
   const raw = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGS);
-  if (!raw) {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(SEED_LOGS));
-    return SEED_LOGS;
-  }
+  if (!raw) return [];
   try {
     const list = JSON.parse(raw);
-    if (!Array.isArray(list) || list.length === 0) {
-      localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(SEED_LOGS));
-      return SEED_LOGS;
+    if (!Array.isArray(list)) return [];
+    // Strictly filter out any fake seed logs or mock placeholder images
+    const realList = list.filter(isRealSelfie);
+    if (realList.length !== list.length) {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(realList));
     }
-    return list;
+    return realList;
   } catch {
-    return SEED_LOGS;
+    return [];
   }
 }
 
@@ -988,12 +926,8 @@ export async function apiGetLogs() {
   const localLogs = getLocalLogs();
   const allLogs = mergeLogs(localLogs, mergeLogs(serverLogs || [], cloudLogs || []));
 
-  if (allLogs.length > 0) {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(allLogs));
-    return { success: true, logs: allLogs };
-  }
-
-  return { success: true, logs: localLogs };
+  localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(allLogs));
+  return { success: true, logs: allLogs };
 }
 
 export async function apiGetStats() {
@@ -1027,9 +961,7 @@ export async function apiGetStats() {
   const localLogs = getLocalLogs();
   const allLogs = mergeLogs(localLogs, mergeLogs(serverLogs, cloudLogs));
 
-  if (allLogs.length > 0) {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(allLogs));
-  }
+  localStorage.setItem(LOCAL_STORAGE_KEYS.LOGS, JSON.stringify(allLogs));
 
   const members = getLocalMembers();
   const media = getLocalMedia();
